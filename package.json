@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Oleksandr Marchenko",
   "license": "ISC",
   "homepage": "",
   "dependencies": {
