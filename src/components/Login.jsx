@@ -1,64 +1,83 @@
-import React, { useRef } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Container, Row, Col } from 'react-bootstrap';
-import * as Yup from 'yup';
+import React, { useRef, useState, useContext } from 'react';
+import { useFormik } from 'formik';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
+import { AuthContext } from './App.jsx';
 
 const routes = {
   login: '/api/v1/login',
 }
 
 const LoginForm = () => {
+  const useAuth = useContext(AuthContext);
+  const [authFailed, setAuthFailed] = useState(false);
+  const formik = useFormik({
+    initialValues: { username: '', password: '' },
+    onSubmit: async (values) => {
+      const { username, password } = values;
+      try {
+        setAuthFailed(false);
+        const response = await axios.post(routes.login, { username, password });
+        const { data: { token }} = response;
+        localStorage.setItem('userId', JSON.stringify({ token }));
+        formik.resetForm();
+        useAuth.logIn();
+      } catch (error) {
+        setAuthFailed(true);
+        useAuth.logOut();
+      }
+    },
+  })
 
   return (
-    <Formik
-      initialValues={{ username: '', password: '' }}
-      validationSchema={Yup.object({
-        username: Yup.string()
-          .min(5, 'Must be 5 characters or more')
-          .required('Required'),
-        password: Yup.string().required('Required').min(5, 'Must be 5 chars or more'),
-      })}
-      onSubmit={ async (values, actions) => {
-        const { username, password } = values;
-        try {
-          const response = await axios.post(routes.login, { username, password });
-          const { data: { token }} = response;
-          localStorage.setItem('userId', JSON.stringify({ token }));
-          actions.resetForm();
-        } catch (error) {
-          console.log(error);
-          actions.setErrors({ username: 'Wrong username or password', password: 'Wrong username of password'});
-        }
-      }}
-    >
-      <Form>
-        <label htmlFor='username'>Username</label>
-        <Field name="username" type="text"></Field>
-        <ErrorMessage name="username"/>
-        <label htmlFor='password'>Password</label>
-        <Field name="password" type="password"></Field>
-        <ErrorMessage name="password"/>
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
+    <Form onSubmit={formik.handleSubmit}>
+      <Form.Group className="mb-3" controlId="username">
+        <Form.Label>Username</Form.Label>
+        <Form.Control 
+          name='username'
+          placeholder='username'
+          onChange={formik.handleChange}
+          value={formik.values.username}
+          isInvalid={authFailed}
+          required
+        />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="password">
+        <Form.Label>Password</Form.Label>
+        <Form.Control 
+          type='password' 
+          name='password'
+          placeholder='password'
+          onChange={formik.handleChange}
+          value={formik.values.password}
+          isInvalid={authFailed}
+          required
+        />
+        <Form.Control.Feedback type="invalid">Invalid username/password</Form.Control.Feedback>
+      </Form.Group>
+      <Button type="submit">Submit</Button>
+    </Form>
   );
 }
  
 
-const Login = () => (
-  <>
-    <h2>Login</h2>
-    <Container>
-      <Row>
-        <Col>
-          TEXT
-        </Col>
-      </Row>
-    </Container>
-    <LoginForm />
-  </>
+const Login = () => {
+  const useAuth = useContext(AuthContext);
+  return (
+    <>
+      <h2 className="mb-5">Login</h2>
+      <Container>
+        <Row>
+          <Col md={6}>
+            <LoginForm />
+            {useAuth.loggedIn && <Redirect to="/"></Redirect>}
+          </Col>
+        </Row>
+      </Container>
+    </>
   
-);
+  );
+}
 
 export default Login;
