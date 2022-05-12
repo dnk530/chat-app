@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import {
   BrowserRouter as Router,
@@ -11,6 +11,8 @@ import {
 import { Navbar, Nav, Container, Row, Col } from 'react-bootstrap'
 
 import Login from './Login.jsx';
+import getData from '../utils/fetcher.js';
+
 export const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
@@ -70,12 +72,20 @@ export default function App() {
 
 const Home = () => {
   const useAuth = useContext(AuthContext);
+  useEffect(() => {
+    if (!useAuth.loggedIn) {
+      return null;
+    }
+    getData();
+  }, [])
+
   return (
     <Container>
       <Row>
         <Col>
           <h2>Home</h2>
           {useAuth.loggedIn ? <p>authorized</p> : <Redirect to="/login"></Redirect>}
+
         </Col>
       </Row>
     </Container>
