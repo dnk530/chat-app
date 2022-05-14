@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const routes = {
   login: '/api/v1/login',
   fetch: '/api/v1/data',
@@ -14,6 +15,6 @@ const getAuthHeader = (token) => {
 };
 
 export default async () => {
-  const {data} = await axios.get(routes.fetch, { headers: getAuthHeader() });
-  console.log(data);
+  const { data } = await axios.get(routes.fetch, { headers: getAuthHeader() });
+  return data;
 };
