@@ -49,7 +49,7 @@ export default function App() {
     <AuthProvider>
       <Router>
         <Container className='d-flex flex-column h-100'>
-          <Navbar bg="white shadow px-4" className="mb-3">
+          <Navbar bg="white" className="mb-3 shadow-sm px-4">
             <Navbar.Brand as={Link} to={"/"}>Chat</Navbar.Brand>
             <Nav className="mr-auto">
               <Nav.Link as={Link} to="/">Home</Nav.Link>
@@ -101,19 +101,19 @@ const Home = () => {
   return (
     <Container className='h-100 my-4 overflow-hidden rounded shadow'>
       <Row className='h-100'>
-        <Col xs={3} className="bg-light pt-5 px-0 border-end">
+        <Col className="col-2 bg-light pt-5 px-0 border-end">
             <span className='px-3'>Channels:</span>
           <Nav fill variant="pills" className="d-flex flex-column align-items-start px-2">
             {channels.map((channel) => <Nav.Item><Nav.Link active={channel.id === activeChannelId} onClick={() => setActiveChannelId(channel.id)}>{`#${channel.name}`}</Nav.Link></Nav.Item>)}
           </Nav>
         </Col>
-        <Col className='p-0'>
-          <Container fluid className='h-100 d-flex flex-column'>
-            <Row className='mb-3 p-2 bg-light'>
+        <Col className=''>
+          <Container fluid className='h-100 p-0 d-flex flex-column'>
+            <Row className='mb-3 p-2 bg-light shadow-sm small'>
               <span>Chat Header</span>
               <span className='text-muted'># of messages</span>
             </Row>
-            <Row className='bg-white'>
+            <Row className='bg-white px-2'>
               <span>Messages</span>
             </Row>
             <Row className='mt-auto py-5'>
