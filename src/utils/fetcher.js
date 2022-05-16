@@ -1,12 +1,11 @@
-import axios from "axios";
-
+import axios from 'axios';
 
 const routes = {
   login: '/api/v1/login',
   fetch: '/api/v1/data',
 };
 
-const getAuthHeader = (token) => {
+const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
   if (userId && userId.token) {
     return { Authorization: `Bearer ${userId.token}` };
