@@ -1,6 +1,4 @@
-import React, {
-  createContext, useContext, useEffect, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   BrowserRouter as Router,
@@ -18,14 +16,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Login from './Login.jsx';
 import getData from '../utils/fetcher.js';
 import { actions, selectors } from '../slices/channelsSlice.js';
+import useAuth from '../hooks/index.js';
+import AuthContext from '../contexts/index.js';
 
-export const AuthContext = createContext({});
-
-const AuthProvider = ({ children }) => {
+function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const logIn = () => {
     setLoggedIn(true);
-  }
+  };
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
@@ -37,59 +35,61 @@ const AuthProvider = ({ children }) => {
       logIn();
     }
   } catch (error) {
-    
+    throw new Error(error);
   }
 
   return (
     <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
-  )
-};
+  );
+}
 
-const App = () => (
-  <AuthProvider>
-    <Router>
-      <Container className="d-flex flex-column h-100">
-        <Navbar bg="white" className="mb-3 shadow-sm px-4">
-          <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
-          <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/login">Login</Nav.Link>
-          </Nav>
-        </Navbar>
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/">
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          </Route>
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
-      </Container>
-    </Router>
-  </AuthProvider>
-);
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <Container className="d-flex flex-column h-100">
+          <Navbar bg="white" className="mb-3 shadow-sm px-4">
+            <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
+            <Nav className="mr-auto">
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+            </Nav>
+          </Navbar>
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/">
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </Container>
+      </Router>
+    </AuthProvider>
+  );
+}
 
 export default App;
 
-const PrivateRoute = ({ children }) => {
-  const useAuth = useContext(AuthContext);
-  return (useAuth.loggedIn ? children : <Redirect to="/login" />);
-};
+function PrivateRoute({ children }) {
+  const auth = useAuth();
+  return (auth.loggedIn ? children : <Redirect to="/login" />);
+}
 
-const Home = () => {
-  const useAuth = useContext(AuthContext);
+function Home() {
+  const auth = useAuth();
   const dispatch = useDispatch();
   const [activeChannelId, setActiveChannelId] = useState(1);
 
   useEffect(() => {
-    if (!useAuth.loggedIn) {
+    if (!auth.loggedIn) {
       return null;
     }
     getData().then((data) => {
@@ -133,6 +133,8 @@ const Home = () => {
 
     </Container>
   );
-};
+}
 
-const NotFound = () => <h2>404</h2>;
+function NotFound() {
+  return <h2>404</h2>
+}
