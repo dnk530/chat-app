@@ -65,13 +65,15 @@ function App() {
     <AuthProvider>
       <Router>
         <Container className="d-flex flex-column h-100">
-          <Navbar bg="white" className="mb-3 shadow-sm px-4">
-            <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
-            <Nav className="mr-auto">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
-              <LogOutButton />
-            </Nav>
+          <Navbar bg="white" className="mb-3 shadow-sm px-2">
+            <Container>
+              <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
+              <Nav className="mr-auto">
+                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <LogOutButton />
+              </Nav>
+            </Container>
           </Navbar>
           <Switch>
             <Route path="/login">
