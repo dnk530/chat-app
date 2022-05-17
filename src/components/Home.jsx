@@ -24,6 +24,7 @@ function Home() {
       dispatch(messagesActions.setMessages(messages));
       setActiveChannelId(currentChannelId);
     });
+    return undefined;
   }, []);
 
   const channels = useSelector(channelsSelectors.selectAll);

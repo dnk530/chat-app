@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import {
   BrowserRouter as Router,
@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 
 import {
-  Navbar, Nav, Container, Button
+  Navbar, Nav, Container, Button,
 } from 'react-bootstrap';
 
 import Login from './Login.jsx';
@@ -30,6 +30,8 @@ function AuthProvider({ children }) {
     setLoggedIn(false);
   };
 
+  const value = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
+
   try {
     const userId = JSON.parse(localStorage.getItem('userId'));
     if (!loggedIn && userId.token) {
@@ -40,7 +42,7 @@ function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
