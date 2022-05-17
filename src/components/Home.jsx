@@ -9,6 +9,7 @@ import { actions as channelActions, selectors as channelsSelectors } from '../sl
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
+import Messages from './Messages.jsx';
 
 function Home() {
   const auth = useAuth();
@@ -46,7 +47,7 @@ function Home() {
               <span className="text-muted"># of messages</span>
             </Row>
             <Row className="bg-white px-2">
-              <span>Messages</span>
+              <Messages channelId={activeChannelId} />
             </Row>
             <Row className="mt-auto py-5">
               <NewMessageForm />

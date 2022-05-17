@@ -11,8 +11,9 @@ function NewMessageForm() {
     onSubmit: (values) => {
       const { text } = values;
       const username = 'test';
+      const channelId = 1;
       const newPromise = new Promise((resolve, reject) => {
-        socket.emit('newMessage', { text, username, timestamp: Date.now() }, (res) => {
+        socket.emit('newMessage', { text, username, channelId, timestamp: Date.now() }, (res) => {
           if (res.status === 'ok') {
             f.resetForm();
             resolve();
