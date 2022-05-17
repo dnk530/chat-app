@@ -1,8 +1,17 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
+import getData from '../utils/fetcher.js';
 
 const channelsAdapter = createEntityAdapter();
 
-const initialState = channelsAdapter.getInitialState();
+const initialState = channelsAdapter.getInitialState({ currentChannelId: null });
+
+export const fetchAllChannels = createAsyncThunk(
+  'channels/fetchAll',
+  async () => {
+    const data = await getData();
+    return data;
+  },
+);
 
 const channelSlice = createSlice({
   name: 'channels',
@@ -11,6 +20,16 @@ const channelSlice = createSlice({
     addChannel: channelsAdapter.addOne,
     setChannels: channelsAdapter.addMany,
     removeChannel: channelsAdapter.removeOne,
+    setCurrentChannelId: (state, { payload }) => {
+      state.currentChannelId = payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAllChannels.fulfilled, (state, action) => {
+      const { channels, currentChannelId } = action.payload;
+      channelsAdapter.addMany(state, channels);
+      state.currentChannelId = currentChannelId;
+    });
   },
 });
 
