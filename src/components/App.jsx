@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   BrowserRouter as Router,
@@ -9,18 +9,19 @@ import {
 } from 'react-router-dom';
 
 import {
-  Navbar, Nav, Container, Row, Col, Form, Button,
+  Navbar, Nav, Container, Button
 } from 'react-bootstrap';
 
-import { useDispatch, useSelector } from 'react-redux';
 import Login from './Login.jsx';
-import getData from '../utils/fetcher.js';
-import { actions, selectors } from '../slices/channelsSlice.js';
+import Home from './Home.jsx';
+import NotFound from './404.jsx';
+
 import useAuth from '../hooks/index.js';
 import AuthContext from '../contexts/index.js';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
+
   const logIn = () => {
     setLoggedIn(true);
   };
@@ -35,13 +36,25 @@ function AuthProvider({ children }) {
       logIn();
     }
   } catch (error) {
-    throw new Error(error);
+    console.log(error);
   }
 
   return (
     <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
       {children}
     </AuthContext.Provider>
+  );
+}
+
+function PrivateRoute({ children }) {
+  const auth = useAuth();
+  return (auth.loggedIn ? children : <Redirect to="/login" />);
+}
+
+function LogOutButton() {
+  const auth = useAuth();
+  return (
+    <Button onClick={auth.logOut}>Log out</Button>
   );
 }
 
@@ -55,6 +68,7 @@ function App() {
             <Nav className="mr-auto">
               <Nav.Link as={Link} to="/">Home</Nav.Link>
               <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <LogOutButton />
             </Nav>
           </Navbar>
           <Switch>
@@ -77,64 +91,3 @@ function App() {
 }
 
 export default App;
-
-function PrivateRoute({ children }) {
-  const auth = useAuth();
-  return (auth.loggedIn ? children : <Redirect to="/login" />);
-}
-
-function Home() {
-  const auth = useAuth();
-  const dispatch = useDispatch();
-  const [activeChannelId, setActiveChannelId] = useState(1);
-
-  useEffect(() => {
-    if (!auth.loggedIn) {
-      return null;
-    }
-    getData().then((data) => {
-      const { channels, currentChannelId, messages } = data;
-      dispatch(actions.setChannels(channels));
-      setActiveChannelId(currentChannelId);
-    });
-  }, []);
-
-  const channels = useSelector(selectors.selectAll);
-
-  return (
-    <Container className="h-100 my-4 overflow-hidden rounded shadow">
-      <Row className="h-100">
-        <Col className="col-2 bg-light pt-5 px-0 border-end overflow-hidden">
-          <span className="px-3">Channels:</span>
-          <Nav fill variant="pills" className="d-flex flex-column align-items-start px-2">
-            {channels.map((channel) => <Nav.Item key={channel.id}><Nav.Link active={channel.id === activeChannelId} onClick={() => setActiveChannelId(channel.id)}>{`#${channel.name}`}</Nav.Link></Nav.Item>)}
-          </Nav>
-        </Col>
-        <Col>
-          <Container fluid className="h-100 p-0 d-flex flex-column">
-            <Row className="mb-3 p-2 bg-light shadow-sm small">
-              <span>Chat Header</span>
-              <span className="text-muted"># of messages</span>
-            </Row>
-            <Row className="bg-white px-2">
-              <span>Messages</span>
-            </Row>
-            <Row className="mt-auto py-5">
-              <Form>
-                <Form.Group className="d-flex">
-                  <Form.Control type="text" aria-label="New message" placeholder="Enter your message..." />
-                  <Button type="Submit" className="mx-2">Send</Button>
-                </Form.Group>
-              </Form>
-            </Row>
-          </Container>
-        </Col>
-      </Row>
-
-    </Container>
-  );
-}
-
-function NotFound() {
-  return <h2>404</h2>
-}
