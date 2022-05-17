@@ -1,13 +1,25 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { io } from 'socket.io-client';
+
+const socket = io();
 
 function NewMessageForm() {
   const f = useFormik({
     initialValues: { text: '' },
     onSubmit: (values) => {
-      console.log(values.text);
-      f.resetForm();
+      const { text } = values;
+      const username = 'test';
+      const newPromise = new Promise((resolve, reject) => {
+        socket.emit('newMessage', { text, username, timestamp: Date.now() }, (res) => {
+          if (res.status === 'ok') {
+            f.resetForm();
+            resolve();
+          }
+        });
+      });
+      return newPromise;
     },
   });
 
@@ -22,7 +34,7 @@ function NewMessageForm() {
           value={f.values.text}
           onChange={f.handleChange}
         />
-        <Button type="Submit" className="mx-2">
+        <Button type="submit" className="mx-2" disabled={f.isSubmitting}>
           Send
         </Button>
       </Form.Group>
