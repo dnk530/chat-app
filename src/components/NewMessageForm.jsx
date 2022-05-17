@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
-import { io } from 'socket.io-client';
-
-const socket = io();
+import useSocket from '../hooks/useSocket.js';
 
 function NewMessageForm() {
+  const socket = useSocket();
+
   const f = useFormik({
     initialValues: { text: '' },
     onSubmit: (values) => {
