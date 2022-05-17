@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Row, Col, Form, Button, Container, Nav,
+  Row, Col, Container, Nav,
 } from 'react-bootstrap';
 
 import getData from '../utils/fetcher.js';
 import { actions as channelActions, selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import { actions as messagesActions } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/index.js';
+import NewMessageForm from './NewMessageForm.jsx';
 
 function Home() {
   const auth = useAuth();
@@ -48,12 +49,7 @@ function Home() {
               <span>Messages</span>
             </Row>
             <Row className="mt-auto py-5">
-              <Form>
-                <Form.Group className="d-flex">
-                  <Form.Control type="text" aria-label="New message" placeholder="Enter your message..." />
-                  <Button type="Submit" className="mx-2">Send</Button>
-                </Form.Group>
-              </Form>
+              <NewMessageForm />
             </Row>
           </Container>
         </Col>
