@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Row, Col, Container, Nav,
@@ -9,6 +9,7 @@ import { actions as messagesActions, fetchAllMessages, selectors as messagesSele
 import useAuth from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
 import Messages from './Messages.jsx';
+import ChannelButton from './ChannelButton.jsx';
 
 function Home() {
   const auth = useAuth();
@@ -36,10 +37,20 @@ function Home() {
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
       <Row className="h-100">
-        <Col className="col-2 bg-light pt-5 px-0 border-end overflow-hidden">
+        <Col className="col-4 bg-light pt-5 px-0 border-end overflow-hidden">
           <span className="px-3">Channels:</span>
-          <Nav fill variant="pills" className="d-flex flex-column align-items-start px-2">
-            {channels.map((channel) => <Nav.Item key={channel.id}><Nav.Link active={channel.id === currentChannelId} onClick={() => dispatch(channelActions.setCurrentChannelId(channel.id))}>{`#${channel.name}`}</Nav.Link></Nav.Item>)}
+          <Nav
+            fill
+            variant="pills"
+            className="d-flex flex-column px-2"
+          >
+            {channels.map((channel) => (
+              <ChannelButton
+                channel={channel}
+                isActive={channel.id === currentChannelId}
+                onClick={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
+              />
+            ))}
           </Nav>
         </Col>
         <Col className="h-100">
@@ -50,11 +61,10 @@ function Home() {
                 <br />
                 <span className="text-muted">
                   {numberOfMessages}
-                  {' '}
-                  messages
+                  &nbsp;messages
                 </span>
               </Col>
-              <Col>
+              <Col className="text-end">
                 Welcome,&nbsp;
                 {auth.username}
                 !
@@ -69,7 +79,6 @@ function Home() {
           </Container>
         </Col>
       </Row>
-
     </Container>
   );
 }
