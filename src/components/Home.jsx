@@ -52,7 +52,7 @@ function Home() {
                 messages
               </span>
             </Row>
-            <Row className="bg-white px-2">
+            <Row className="bg-white px-2 h-100 overflow-auto">
               <Messages channelId={currentChannelId} />
             </Row>
             <Row className="mt-auto py-5">

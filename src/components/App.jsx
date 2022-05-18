@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import { io } from 'socket.io-client';
 
 import {
   BrowserRouter as Router,
@@ -19,7 +18,6 @@ import NotFound from './404.jsx';
 
 import useAuth from '../hooks/index.js';
 import AuthContext from '../contexts/index.js';
-import SocketContext from '../contexts/socket.js';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -34,7 +32,12 @@ function AuthProvider({ children }) {
     setLoggedIn(false);
   };
 
-  const value = useMemo(() => ({ loggedIn, logIn, logOut, username }), [loggedIn]);
+  const value = useMemo(() => ({
+    loggedIn,
+    logIn,
+    logOut,
+    username,
+  }), [loggedIn, username]);
 
   try {
     const userId = JSON.parse(localStorage.getItem('userId'));
@@ -49,15 +52,6 @@ function AuthProvider({ children }) {
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  );
-}
-
-function SocketProvider({ children }) {
-  const socket = io();
-  return (
-    <SocketContext.Provider value={socket}>
-      {children}
-    </SocketContext.Provider>
   );
 }
 
@@ -76,35 +70,33 @@ function LogOutButton() {
 function App() {
   return (
     <AuthProvider>
-      <SocketProvider>
-        <Router>
-          <Container className="d-flex flex-column h-100">
-            <Navbar bg="white" className="mb-3 shadow-sm px-2">
-              <Container>
-                <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
-                <Nav className="mr-auto">
-                  <Nav.Link as={Link} to="/">Home</Nav.Link>
-                  <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                  <LogOutButton />
-                </Nav>
-              </Container>
-            </Navbar>
-            <Switch>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/">
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              </Route>
-              <Route path="*">
-                <NotFound />
-              </Route>
-            </Switch>
-          </Container>
-        </Router>
-      </SocketProvider>
+      <Router>
+        <Container className="d-flex flex-column h-100">
+          <Navbar bg="white" className="mb-3 shadow-sm px-2">
+            <Container>
+              <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
+              <Nav className="mr-auto">
+                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <LogOutButton />
+              </Nav>
+            </Container>
+          </Navbar>
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/">
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            </Route>
+            <Route path="*">
+              <NotFound />
+            </Route>
+          </Switch>
+        </Container>
+      </Router>
     </AuthProvider>
   );
 }

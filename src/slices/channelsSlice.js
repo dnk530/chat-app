@@ -28,7 +28,9 @@ const channelSlice = createSlice({
     builder.addCase(fetchAllChannels.fulfilled, (state, action) => {
       const { channels, currentChannelId } = action.payload;
       channelsAdapter.addMany(state, channels);
-      state.currentChannelId = currentChannelId;
+      if (state.currentChannelId === null) {
+        state.currentChannelId = currentChannelId;
+      }
     });
   },
 });
