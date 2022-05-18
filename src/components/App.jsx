@@ -30,6 +30,7 @@ function AuthProvider({ children }) {
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
+    setUsername(null);
   };
 
   const value = useMemo(() => ({
