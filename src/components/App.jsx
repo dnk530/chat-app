@@ -23,21 +23,23 @@ import SocketContext from '../contexts/socket.js';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState(null);
 
-  const logIn = () => {
+  const logIn = (loggedInUsername) => {
     setLoggedIn(true);
+    setUsername(loggedInUsername);
   };
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
 
-  const value = useMemo(() => ({ loggedIn, logIn, logOut }), [loggedIn]);
+  const value = useMemo(() => ({ loggedIn, logIn, logOut, username }), [loggedIn]);
 
   try {
     const userId = JSON.parse(localStorage.getItem('userId'));
     if (!loggedIn && userId.token) {
-      logIn();
+      logIn(userId.username);
     }
   } catch (error) {
     console.log(error);

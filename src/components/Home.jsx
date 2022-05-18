@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 
 import { actions as channelActions, fetchAllChannels, selectors as channelsSelectors } from '../slices/channelsSlice.js';
-import { actions as messagesActions, fetchAllMessages } from '../slices/messagesSlice.js';
+import { actions as messagesActions, fetchAllMessages, selectors as messagesSelectors } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
 import Messages from './Messages.jsx';
@@ -25,6 +25,13 @@ function Home() {
 
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const numberOfMessages = useSelector(messagesSelectors.selectAll)
+    .filter((m) => m.channelId === currentChannelId)
+    .length;
+
+  const channelName = channels.length > 0
+    ? channels.find((c) => (c.id === currentChannelId)).name
+    : null;
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -38,8 +45,12 @@ function Home() {
         <Col>
           <Container fluid className="h-100 p-0 d-flex flex-column">
             <Row className="mb-3 p-2 bg-light shadow-sm small">
-              <span>Chat Header</span>
-              <span className="text-muted"># of messages</span>
+              <span>{`#${channelName}`}</span>
+              <span className="text-muted">
+                {numberOfMessages}
+                {' '}
+                messages
+              </span>
             </Row>
             <Row className="bg-white px-2">
               <Messages channelId={currentChannelId} />

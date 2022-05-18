@@ -1,17 +1,21 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 import useSocket from '../hooks/useSocket.js';
+import useAuth from '../hooks/index.js';
 
 function NewMessageForm() {
   const socket = useSocket();
+  const auth = useAuth();
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   const f = useFormik({
     initialValues: { text: '' },
     onSubmit: (values) => {
       const { text } = values;
-      const username = 'test';
-      const channelId = 1;
+      const { username } = auth;
+      const channelId = currentChannelId;
       const newPromise = new Promise((resolve, reject) => {
         socket.emit('newMessage', { text, username, channelId, timestamp: Date.now() }, (res) => {
           if (res.status === 'ok') {
