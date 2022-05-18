@@ -42,17 +42,25 @@ function Home() {
             {channels.map((channel) => <Nav.Item key={channel.id}><Nav.Link active={channel.id === currentChannelId} onClick={() => dispatch(channelActions.setCurrentChannelId(channel.id))}>{`#${channel.name}`}</Nav.Link></Nav.Item>)}
           </Nav>
         </Col>
-        <Col>
+        <Col className="h-100">
           <Container fluid className="h-100 p-0 d-flex flex-column">
             <Row className="mb-3 p-2 bg-light shadow-sm small">
-              <span>{`#${channelName}`}</span>
-              <span className="text-muted">
-                {numberOfMessages}
-                {' '}
-                messages
-              </span>
+              <Col>
+                <span>{`#${channelName}`}</span>
+                <br />
+                <span className="text-muted">
+                  {numberOfMessages}
+                  {' '}
+                  messages
+                </span>
+              </Col>
+              <Col>
+                Welcome,&nbsp;
+                {auth.username}
+                !
+              </Col>
             </Row>
-            <Row className="bg-white px-2 h-100 overflow-auto">
+            <Row className="bg-white px-2 overflow-auto">
               <Messages channelId={currentChannelId} />
             </Row>
             <Row className="mt-auto py-5">
