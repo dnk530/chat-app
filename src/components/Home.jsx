@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Row, Col, Container, Nav,
+  Row, Col, Container, Nav, Button,
 } from 'react-bootstrap';
 
 import { actions as channelActions, fetchAllChannels, selectors as channelsSelectors } from '../slices/channelsSlice.js';
@@ -37,8 +37,11 @@ function Home() {
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
       <Row className="h-100">
-        <Col className="col-4 bg-light pt-5 px-0 border-end overflow-hidden">
-          <span className="px-3">Channels:</span>
+        <Col className="col-4 bg-light pt-4 px-0 border-end overflow-hidden">
+          <Container className="d-flex justify-content-between ps-0 pe-2 mb-2">
+            <span className="px-3">Channels:</span>
+            <Button variant="light" className="p-0" onClick={() => {}}>+</Button>
+          </Container>
           <Nav
             fill
             variant="pills"
