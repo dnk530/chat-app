@@ -18,7 +18,7 @@ const routes = {
 function LoginForm() {
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
-  const formik = useFormik({
+  const f = useFormik({
     initialValues: { username: '', password: '' },
     onSubmit: async (values) => {
       const { username, password } = values;
@@ -27,7 +27,7 @@ function LoginForm() {
         const response = await axios.post(routes.login, { username, password });
         const { data } = response;
         localStorage.setItem('userId', JSON.stringify(data));
-        formik.resetForm();
+        f.resetForm();
         auth.logIn();
       } catch (error) {
         setAuthFailed(true);
@@ -37,15 +37,16 @@ function LoginForm() {
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
+    <Form onSubmit={f.handleSubmit}>
       <Form.Group className="mb-3" controlId="username">
         <Form.Label>Username</Form.Label>
         <Form.Control
           name="username"
           placeholder="username"
-          onChange={formik.handleChange}
-          value={formik.values.username}
+          onChange={f.handleChange}
+          value={f.values.username}
           isInvalid={authFailed}
+          disabled={f.isSubmitting}
           required
         />
       </Form.Group>
@@ -55,14 +56,15 @@ function LoginForm() {
           type="password"
           name="password"
           placeholder="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
+          onChange={f.handleChange}
+          value={f.values.password}
           isInvalid={authFailed}
+          disabled={f.isSubmitting}
           required
         />
         <Form.Control.Feedback type="invalid">Invalid username/password</Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={f.isSubmitting}>Submit</Button>
     </Form>
   );
 }
