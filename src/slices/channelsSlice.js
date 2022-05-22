@@ -26,13 +26,14 @@ const channelSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchAllChannels.fulfilled, (state, action) => {
-      const { channels, currentChannelId } = action.payload;
-      channelsAdapter.addMany(state, channels);
-      if (state.currentChannelId === null) {
-        state.currentChannelId = currentChannelId;
-      }
-    });
+    builder
+      .addCase(fetchAllChannels.fulfilled, (state, action) => {
+        const { channels, currentChannelId } = action.payload;
+        channelsAdapter.addMany(state, channels);
+        if (state.currentChannelId === null) {
+          state.currentChannelId = currentChannelId;
+        }
+      });
   },
 });
 
