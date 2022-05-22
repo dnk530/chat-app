@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Row, Col, Container, Nav, Button,
@@ -10,6 +10,9 @@ import useAuth from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
 import Messages from './Messages.jsx';
 import ChannelButton from './ChannelButton.jsx';
+import AddChannel from './modals/AddChannel.jsx';
+import DeleteChannel from './modals/DeleteChannel.jsx';
+import RenameChannel from './modals/RenameChannel.jsx';
 
 function Home() {
   const auth = useAuth();
@@ -34,55 +37,73 @@ function Home() {
     ? channels.find((c) => (c.id === currentChannelId)).name
     : null;
 
+  const [modalInfo, setModalInfo] = useState({ type: null, channel: null });
+
+  const showModal = (type, channel = null) => () => {
+    setModalInfo({ type, channel });
+  };
+  const hideModal = () => {
+    setModalInfo({ type: null, channel: null });
+  };
+
   return (
-    <Container className="h-100 my-4 overflow-hidden rounded shadow">
-      <Row className="h-100">
-        <Col className="col-4 bg-light pt-4 px-0 border-end overflow-hidden">
-          <Container className="d-flex justify-content-between ps-0 pe-2 mb-2">
-            <span className="px-3">Channels:</span>
-            <Button variant="light" className="p-0" onClick={() => {}}>+</Button>
-          </Container>
-          <Nav
-            fill
-            variant="pills"
-            className="d-flex flex-column px-2"
-          >
-            {channels.map((channel) => (
-              <ChannelButton
-                channel={channel}
-                isActive={channel.id === currentChannelId}
-                onClick={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
-              />
-            ))}
-          </Nav>
-        </Col>
-        <Col className="h-100">
-          <Container fluid className="h-100 p-0 d-flex flex-column">
-            <Row className="mb-3 p-2 bg-light shadow-sm small">
-              <Col>
-                <span>{`#${channelName}`}</span>
-                <br />
-                <span className="text-muted">
-                  {numberOfMessages}
-                  &nbsp;messages
-                </span>
-              </Col>
-              <Col className="text-end">
-                Welcome,&nbsp;
-                {auth.username}
-                !
-              </Col>
-            </Row>
-            <Row className="bg-white px-2 overflow-auto">
-              <Messages channelId={currentChannelId} />
-            </Row>
-            <Row className="mt-auto py-5">
-              <NewMessageForm />
-            </Row>
-          </Container>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {/* {renderModal({ modalInfo, hideModal })} */}
+      <AddChannel show={modalInfo.type === 'addChannel'} hideModal={hideModal} />
+      <DeleteChannel show={modalInfo.type === 'deleteChannel'} hideModal={hideModal} modalInfo={modalInfo} />
+      <RenameChannel show={modalInfo.type === 'renameChannel'} hideModal={hideModal} modalInfo={modalInfo} />
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100">
+          <Col className="col-4 bg-light pt-4 px-0 border-end overflow-hidden">
+            <Container className="d-flex justify-content-between ps-0 pe-2 mb-2">
+              <span className="px-3">Channels:</span>
+              <Button variant="light" className="p-0" onClick={showModal('addChannel')}>+</Button>
+            </Container>
+            <Nav
+              fill
+              variant="pills"
+              className="d-flex flex-column px-2"
+            >
+              {channels.map((channel) => (
+                <ChannelButton
+                  channel={channel}
+                  isActive={channel.id === currentChannelId}
+                  handleSelect={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
+                  handleRename={showModal('renameChannel', channel)}
+                  handleDelete={showModal('deleteChannel', channel)}
+                />
+              ))}
+            </Nav>
+          </Col>
+          <Col className="h-100">
+            <Container fluid className="h-100 p-0 d-flex flex-column">
+              <Row className="mb-3 p-2 bg-light shadow-sm small">
+                <Col>
+                  <span>{`#${channelName}`}</span>
+                  <br />
+                  <span className="text-muted">
+                    {numberOfMessages}
+                    &nbsp;messages
+                  </span>
+                </Col>
+                <Col className="text-end">
+                  Welcome,&nbsp;
+                  {auth.username}
+                  !
+                </Col>
+              </Row>
+              <Row className="bg-white px-2 overflow-auto">
+                <Messages channelId={currentChannelId} />
+              </Row>
+              <Row className="mt-auto py-5">
+                <NewMessageForm />
+              </Row>
+            </Container>
+          </Col>
+        </Row>
+      </Container>
+    </>
+
   );
 }
 
