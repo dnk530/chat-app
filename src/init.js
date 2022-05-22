@@ -12,8 +12,12 @@ export default (socket, store) => {
 
   socket.on('removeChannel', (message) => {
     const { id } = message;
+    const { currentChannelId } = store.getState().channels;
+
     store.dispatch(channelsActions.removeChannel(id));
-    store.dispatch(channelsActions.setCurrentChannelId(1)); // todo: default channel not hardcoded;
+    if (currentChannelId === id) {
+      store.dispatch(channelsActions.setCurrentChannelId(1));
+    }
   });
 
   socket.on('renameChannel', (message) => {
