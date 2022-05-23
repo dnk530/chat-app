@@ -80,6 +80,7 @@ function App() {
               <Nav className="mr-auto">
                 <Nav.Link as={Link} to="/">Home</Nav.Link>
                 <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
                 <LogOutButton />
               </Nav>
             </Container>
