@@ -10,7 +10,9 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/index.js';
+import { sample } from 'lodash';
 
 const routes = {
   login: '/api/v1/login',
@@ -72,13 +74,14 @@ function LoginForm() {
 
 function Login() {
   const auth = useAuth();
+  const { t } = useTranslation();
   return (
     <Container fluid className="h-100">
       <Row className="justify-content-center align-content-center h-100">
         <Col md={8} xl={6}>
           <Card className="shadow-sm">
             <Card.Body>
-              <Card.Title>Login</Card.Title>
+              <Card.Title>{t('loginHeader')}</Card.Title>
               <LoginForm />
             </Card.Body>
             <Card.Footer className="text-center">

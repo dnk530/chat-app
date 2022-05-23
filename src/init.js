@@ -1,7 +1,18 @@
+import i18next from 'i18next';
+import { useTranslation, initReactI18next } from 'react-i18next';
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
+import resources from './locales/index.js';
 
-export default (socket, store) => {
+export default async (socket, store) => {
+  const i18n = i18next.createInstance();
+  await i18n
+    .use(initReactI18next)
+    .init({
+      resources,
+      lng: 'en',
+    });
+
   socket.on('newMessage', (message) => {
     store.dispatch(messagesActions.addMessage(message));
   });
