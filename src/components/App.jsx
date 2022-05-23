@@ -64,9 +64,7 @@ function PrivateRoute({ children }) {
 
 function LogOutButton() {
   const auth = useAuth();
-  return (
-    <Button onClick={auth.logOut}>Log out</Button>
-  );
+  return auth.loggedIn && <Button onClick={auth.logOut}>Log out</Button>;
 }
 
 function App() {
