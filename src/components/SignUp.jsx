@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Container, Row, Col, Form, Card, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
@@ -8,11 +8,11 @@ import useAuth from '../hooks/index.js';
 
 const signupSchema = Yup.object().shape({
   username: Yup.string()
-    .min(3, '>3')
-    .max(20, '<20')
+    .min(3, 'Must be longer than 3')
+    .max(20, 'Must be shorter than 20')
     .required('required'),
   password: Yup.string()
-    .min(6, '>6')
+    .min(6, 'Must be longer than 6')
     .required('required'),
   passwordConfirmation: Yup.string()
     .required('required')
@@ -21,6 +21,7 @@ const signupSchema = Yup.object().shape({
 
 function SignUp() {
   const auth = useAuth();
+  const usernameRef = useRef(null);
 
   return (auth.loggedIn
     ? <Redirect to="/" />
@@ -39,61 +40,69 @@ function SignUp() {
                   }}
                   validationSchema={signupSchema}
                   onSubmit={(values, actions) => {
-                    console.log(values);
                     const { username, password } = values;
                     axios.post('/api/v1/signup', { username, password })
                       .then((res) => {
-                        const { token, username } = res.data;
+                        const { token } = res.data;
                         localStorage.setItem('userId', JSON.stringify({ token }));
                         actions.resetForm();
+                        actions.setSubmitting(false);
                         auth.logIn(username);
-                        console.log(res);
                       })
-                      .catch((e) => console.log(e));
+                      .catch((e) => {
+                        if (e.response.status === 409) {
+                          actions.setErrors({ username: 'user already exists' });
+                          actions.setSubmitting(false);
+                          usernameRef.current.focus();
+                        }
+                      });
                   }}
                 >
-                  {({ handleSubmit, handleChange, values, errors, touched }) => (
+                  {({ handleSubmit, handleChange, values, errors, touched, isSubmitting }) => (
                     <Form onSubmit={handleSubmit}>
-                      <Form.Group className="mb-3">
-                        <Form.Label htmlFor="username">
-                          Username
-                        </Form.Label>
-                        <Form.Control
-                          name="username"
-                          type="text"
-                          value={values.username}
-                          onChange={handleChange}
-                          isInvalid={touched.username && errors.username}
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group className="mb-3">
-                        <Form.Label htmlFor="password">
-                          Password
-                        </Form.Label>
-                        <Form.Control
-                          name="password"
-                          type="password"
-                          value={values.password}
-                          onChange={handleChange}
-                          isInvalid={touched.password && errors.password}
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-                      </Form.Group>
-                      <Form.Group className="mb-3">
-                        <Form.Label htmlFor="passwordConfirmation">
-                          Confirm password
-                        </Form.Label>
-                        <Form.Control
-                          name="passwordConfirmation"
-                          type="password"
-                          value={values.passwordConfirmation}
-                          onChange={handleChange}
-                          isInvalid={touched.passwordConfirmation && errors.passwordConfirmation}
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.passwordConfirmation}</Form.Control.Feedback>
-                      </Form.Group>
-                      <Button type="submit" variant="outline-primary">Register</Button>
+                      <fieldset disabled={isSubmitting}>
+                        <Form.Group className="mb-3">
+                          <Form.Label htmlFor="username">
+                            Username
+                          </Form.Label>
+                          <Form.Control
+                            name="username"
+                            type="text"
+                            value={values.username}
+                            onChange={handleChange}
+                            isInvalid={touched.username && errors.username}
+                            ref={usernameRef}
+                          />
+                          <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label htmlFor="password">
+                            Password
+                          </Form.Label>
+                          <Form.Control
+                            name="password"
+                            type="password"
+                            value={values.password}
+                            onChange={handleChange}
+                            isInvalid={touched.password && errors.password}
+                          />
+                          <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label htmlFor="passwordConfirmation">
+                            Confirm password
+                          </Form.Label>
+                          <Form.Control
+                            name="passwordConfirmation"
+                            type="password"
+                            value={values.passwordConfirmation}
+                            onChange={handleChange}
+                            isInvalid={touched.passwordConfirmation && errors.passwordConfirmation}
+                          />
+                          <Form.Control.Feedback type="invalid">{errors.passwordConfirmation}</Form.Control.Feedback>
+                        </Form.Group>
+                        <Button type="submit" variant="outline-primary">Register</Button>
+                      </fieldset>
                     </Form>
                   )}
                 </Formik>
