@@ -6,9 +6,10 @@ import {
   Col,
   Form,
   Button,
+  Card,
 } from 'react-bootstrap';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import useAuth from '../hooks/index.js';
 
 const routes = {
@@ -64,7 +65,7 @@ function LoginForm() {
         />
         <Form.Control.Feedback type="invalid">Invalid username/password</Form.Control.Feedback>
       </Form.Group>
-      <Button type="submit" disabled={f.isSubmitting}>Submit</Button>
+      <Button type="submit" variant="outline-primary" disabled={f.isSubmitting}>Submit</Button>
     </Form>
   );
 }
@@ -72,17 +73,22 @@ function LoginForm() {
 function Login() {
   const auth = useAuth();
   return (
-    <>
-      <h2 className="mb-5">Login</h2>
-      <Container>
-        <Row>
-          <Col md={6}>
-            <LoginForm />
-            {auth.loggedIn && <Redirect to="/" />}
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col md={8} xl={6}>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title>Login</Card.Title>
+              <LoginForm />
+            </Card.Body>
+            <Card.Footer className="text-center">
+              <Card.Link as={Link} to="/signup">Register</Card.Link>
+            </Card.Footer>
+          </Card>
+          {auth.loggedIn && <Redirect to="/" />}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

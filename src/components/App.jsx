@@ -18,6 +18,7 @@ import NotFound from './404.jsx';
 
 import useAuth from '../hooks/index.js';
 import AuthContext from '../contexts/index.js';
+import SignUp from './SignUp.jsx';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -72,7 +73,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Container className="d-flex flex-column h-100">
+        <Container fluid className="d-flex flex-column p-0 h-100">
           <Navbar bg="white" className="mb-3 shadow-sm px-2">
             <Container>
               <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
@@ -91,6 +92,9 @@ function App() {
               <PrivateRoute>
                 <Home />
               </PrivateRoute>
+            </Route>
+            <Route path="/signup">
+              <SignUp />
             </Route>
             <Route path="*">
               <NotFound />
