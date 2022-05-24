@@ -11,6 +11,8 @@ import {
 import {
   Navbar, Nav, Container, Button,
 } from 'react-bootstrap';
+import { ToastContainer } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 import Login from './Login.jsx';
 import Home from './Home.jsx';
@@ -20,7 +22,6 @@ import useAuth from '../hooks/index.js';
 import AuthContext from '../contexts/index.js';
 import SignUp from './SignUp.jsx';
 import LanguageSelect from './LanguageSelect.jsx';
-import { useTranslation } from 'react-i18next';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -105,6 +106,7 @@ function App() {
             </Route>
           </Switch>
         </Container>
+        <ToastContainer />
       </Router>
     </AuthProvider>
   );

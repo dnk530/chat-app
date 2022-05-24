@@ -25,6 +25,11 @@ export default {
     rename: 'Переименовать',
     en: 'English',
     ru: 'Русский',
+    notifications: {
+      channelAdded: 'Канал создан',
+      channelRenamed: 'Канал переименован',
+      channelDeleted: 'Канал удален',
+    },
     errors: {
       required: 'Обязательное поле',
       userAlreadyExists: 'Такой пользователь уже существует',
@@ -34,6 +39,7 @@ export default {
       passwordField: 'Не менее 6 символов',
       channelName: 'От 3 до 20 символов',
       channelNameNotUnique: 'Такой канал уже существует',
+      networkError: 'Ошибка соединенения',
     },
   },
 };

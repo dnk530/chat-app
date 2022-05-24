@@ -11,6 +11,7 @@ import {
 import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../hooks/index.js';
 
 const routes = {
@@ -32,9 +33,14 @@ function LoginForm() {
         localStorage.setItem('userId', JSON.stringify({ token }));
         f.resetForm();
         auth.logIn(username);
-      } catch (error) {
-        setAuthFailed(true);
-        auth.logOut();
+      } catch (e) {
+        if (e.code === 'ERR_BAD_REQUEST' && e.response.status === 401) {
+          setAuthFailed(true);
+          auth.logOut();
+        }
+        if (e.code === 'ERR_NETWORK') {
+          toast.error(t('errors.networkError'));
+        }
       }
     },
   });

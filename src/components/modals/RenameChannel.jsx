@@ -4,6 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import socket from '../../utils/socket.js';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
@@ -27,6 +28,7 @@ function RenameChannel({ show, modalInfo, hideModal }) {
             resolve();
             f.resetForm();
             hideModal();
+            toast.success(t('notifications.channelRenamed'));
           }
         });
       });

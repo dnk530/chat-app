@@ -15,7 +15,7 @@ export default function LanguageSelect() {
       }}
     >
       {Object.keys(languages).map((lang) => (
-        <option value={lang}>{t(lang)}</option>
+        <option key={lang} value={lang}>{t(lang)}</option>
       ))}
     </Form.Select>
   );

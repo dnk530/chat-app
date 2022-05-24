@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import socket from '../../utils/socket.js';
 import { actions as channelsActions, selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
@@ -21,8 +22,7 @@ function AddChannel({ show, hideModal }) {
         .required(),
     }),
     onSubmit: ({ text }) => {
-      console.log('errors: ', f.errors);
-      const promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve) => {
         socket.emit('newChannel', { name: text }, ({ status, data }) => {
           if (status === 'ok') {
             resolve();
@@ -30,6 +30,7 @@ function AddChannel({ show, hideModal }) {
             hideModal();
             dispatch(channelsActions.addChannel(data));
             dispatch(channelsActions.setCurrentChannelId(data.id));
+            toast.success(t('notifications.channelAdded'));
           }
         });
       });

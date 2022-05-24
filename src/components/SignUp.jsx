@@ -5,6 +5,7 @@ import {
 import { Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import axios from 'axios';
 import useAuth from '../hooks/index.js';
@@ -55,9 +56,13 @@ function SignUp() {
                       })
                       .catch((e) => {
                         if (e.response.status === 409) {
-                          actions.setErrors({ username: t('errors.userAlreadyExists') });
+                          actions.setErrors({ username: 'errors.userAlreadyExists' });
                           actions.setSubmitting(false);
                           usernameRef.current.focus();
+                        }
+                        if (e.code === 'ERR_NETWORK') {
+                          toast.error(t('errors.networkError'));
+                          actions.setSubmitting(false);
                         }
                       });
                   }}
