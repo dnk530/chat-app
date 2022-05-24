@@ -6,9 +6,13 @@ import {
   DropdownButton,
   Dropdown,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
-function ChannelButton({ channel, isActive, handleSelect, handleRename, handleDelete }) {
+function ChannelButton({
+  channel, isActive, handleSelect, handleRename, handleDelete,
+}) {
   const { id, name, removable } = channel;
+  const { t } = useTranslation();
   return (
     <Nav.Item key={id} className="w-100">
       <ButtonGroup className="w-100">
@@ -17,8 +21,8 @@ function ChannelButton({ channel, isActive, handleSelect, handleRename, handleDe
         </Button>
         {removable && (
           <DropdownButton variant={isActive ? 'secondary' : 'link'} as={ButtonGroup} title="" id="bg-nested-dropdown" className="rounded-0">
-            <Dropdown.Item onClick={handleRename}>Rename</Dropdown.Item>
-            <Dropdown.Item onClick={handleDelete}>Delete</Dropdown.Item>
+            <Dropdown.Item onClick={handleRename}>{t('rename')}</Dropdown.Item>
+            <Dropdown.Item onClick={handleDelete}>{t('delete')}</Dropdown.Item>
           </DropdownButton>
         )}
       </ButtonGroup>

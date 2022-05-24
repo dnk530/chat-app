@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import {
   Row, Col, Container, Nav, Button,
 } from 'react-bootstrap';
 
 import { actions as channelActions, fetchAllChannels, selectors as channelsSelectors } from '../slices/channelsSlice.js';
-import { actions as messagesActions, fetchAllMessages, selectors as messagesSelectors } from '../slices/messagesSlice.js';
+import { fetchAllMessages, selectors as messagesSelectors } from '../slices/messagesSlice.js';
 import useAuth from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
 import Messages from './Messages.jsx';
@@ -17,6 +18,7 @@ import RenameChannel from './modals/RenameChannel.jsx';
 function Home() {
   const auth = useAuth();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!auth.loggedIn) {
@@ -48,7 +50,6 @@ function Home() {
 
   return (
     <>
-      {/* {renderModal({ modalInfo, hideModal })} */}
       <AddChannel show={modalInfo.type === 'addChannel'} hideModal={hideModal} />
       <DeleteChannel show={modalInfo.type === 'deleteChannel'} hideModal={hideModal} modalInfo={modalInfo} />
       <RenameChannel show={modalInfo.type === 'renameChannel'} hideModal={hideModal} modalInfo={modalInfo} />
@@ -56,7 +57,10 @@ function Home() {
         <Row className="h-100">
           <Col className="col-4 bg-light pt-4 px-0 border-end overflow-hidden">
             <Container className="d-flex justify-content-between ps-0 pe-2 mb-2">
-              <span className="px-3">Channels:</span>
+              <span className="px-3">
+                {t('channels')}
+                :
+              </span>
               <Button variant="light" className="p-0" onClick={showModal('addChannel')}>+</Button>
             </Container>
             <Nav
@@ -82,12 +86,12 @@ function Home() {
                   <span>{`#${channelName}`}</span>
                   <br />
                   <span className="text-muted">
-                    {numberOfMessages}
-                    &nbsp;messages
+                    {t('message', { count: numberOfMessages })}
                   </span>
                 </Col>
                 <Col className="text-end">
-                  Welcome,&nbsp;
+                  {t('welcome')}
+                  ,&nbsp;
                   {auth.username}
                   !
                 </Col>

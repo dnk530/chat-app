@@ -1,17 +1,26 @@
-import i18next from 'i18next';
-import { useTranslation, initReactI18next } from 'react-i18next';
+import { initReactI18next } from 'react-i18next';
+import { setLocale } from 'yup';
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
 import resources from './locales/index.js';
+import i18n from './utils/i18n.js';
+import socket from './utils/socket.js';
+import store from './slices/index.js';
 
-export default async (socket, store) => {
-  const i18n = i18next.createInstance();
+export default async () => {
   await i18n
     .use(initReactI18next)
     .init({
       resources,
+      debug: true,
       lng: 'en',
     });
+
+  setLocale({
+    mixed: {
+      required: 'errors.required',
+    },
+  });
 
   socket.on('newMessage', (message) => {
     store.dispatch(messagesActions.addMessage(message));

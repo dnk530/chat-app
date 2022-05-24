@@ -3,23 +3,25 @@ import { useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import socket from '../../utils/socket.js';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
 function RenameChannel({ show, modalInfo, hideModal }) {
+  const { t } = useTranslation();
   const { channel } = modalInfo;
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
   const f = useFormik({
     initialValues: { text: '' },
     validationSchema: Yup.object().shape({
       text: Yup.string()
-        .min(3, '> 3')
-        .max(20, '< 20')
-        .notOneOf(channelsList, 'Channel with this name already exists')
-        .required('required'),
+        .min(3, 'errors.channelName')
+        .max(20, 'errors.channelName')
+        .notOneOf(channelsList, 'errors.channelNameNotUnique')
+        .required(),
     }),
     onSubmit: ({ text }) => {
-      const promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve) => {
         socket.emit('renameChannel', { name: text, id: channel.id }, (res) => {
           if (res.status === 'ok') {
             resolve();
@@ -35,7 +37,7 @@ function RenameChannel({ show, modalInfo, hideModal }) {
   return (
     <Modal show={show}>
       <Modal.Header closeButton onHide={hideModal}>
-        <Modal.Title>Rename channel</Modal.Title>
+        <Modal.Title>{t('renameChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
@@ -51,17 +53,17 @@ function RenameChannel({ show, modalInfo, hideModal }) {
               isInvalid={f.touched.text && f.errors.text}
             />
             <Form.Control.Feedback type="invalid">
-              {f.errors.text}
+              {t(f.errors.text)}
             </Form.Control.Feedback>
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={hideModal}>
-          Cancel
+          {t('cancel')}
         </Button>
         <Button type="submit" onClick={f.handleSubmit}>
-          Rename
+          {t('rename')}
         </Button>
       </Modal.Footer>
     </Modal>

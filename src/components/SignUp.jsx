@@ -1,27 +1,31 @@
 import React, { useRef } from 'react';
-import { Container, Row, Col, Form, Card, Button } from 'react-bootstrap';
+import {
+  Container, Row, Col, Form, Card, Button,
+} from 'react-bootstrap';
 import { Formik } from 'formik';
 import { Redirect } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import axios from 'axios';
 import useAuth from '../hooks/index.js';
 
-const signupSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(3, 'Must be longer than 3')
-    .max(20, 'Must be shorter than 20')
-    .required('required'),
-  password: Yup.string()
-    .min(6, 'Must be longer than 6')
-    .required('required'),
-  passwordConfirmation: Yup.string()
-    .required('required')
-    .oneOf([Yup.ref('password')], "Passwords don't match"),
-});
-
 function SignUp() {
+  const signupSchema = Yup.object().shape({
+    username: Yup.string()
+      .min(3, 'errors.usernameField')
+      .max(20, 'errors.usernameField')
+      .required(),
+    password: Yup.string()
+      .min(6, 'errors.passwordField')
+      .required(),
+    passwordConfirmation: Yup.string()
+      .required()
+      .oneOf([Yup.ref('password')], 'errors.passwordConfirmation'),
+  });
+
   const auth = useAuth();
   const usernameRef = useRef(null);
+  const { t } = useTranslation();
 
   return (auth.loggedIn
     ? <Redirect to="/" />
@@ -31,7 +35,7 @@ function SignUp() {
           <Col md={8} xl={6}>
             <Card className="shadow-sm">
               <Card.Body>
-                <Card.Title>Register</Card.Title>
+                <Card.Title>{t('registration')}</Card.Title>
                 <Formik
                   initialValues={{
                     username: '',
@@ -51,19 +55,21 @@ function SignUp() {
                       })
                       .catch((e) => {
                         if (e.response.status === 409) {
-                          actions.setErrors({ username: 'user already exists' });
+                          actions.setErrors({ username: t('errors.userAlreadyExists') });
                           actions.setSubmitting(false);
                           usernameRef.current.focus();
                         }
                       });
                   }}
                 >
-                  {({ handleSubmit, handleChange, values, errors, touched, isSubmitting }) => (
+                  {({
+                    handleSubmit, handleChange, values, errors, touched, isSubmitting,
+                  }) => (
                     <Form onSubmit={handleSubmit}>
                       <fieldset disabled={isSubmitting}>
                         <Form.Group className="mb-3">
                           <Form.Label htmlFor="username">
-                            Username
+                            {t('username')}
                           </Form.Label>
                           <Form.Control
                             name="username"
@@ -73,11 +79,11 @@ function SignUp() {
                             isInvalid={touched.username && errors.username}
                             ref={usernameRef}
                           />
-                          <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">{t(errors.username)}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label htmlFor="password">
-                            Password
+                            {t('password')}
                           </Form.Label>
                           <Form.Control
                             name="password"
@@ -86,11 +92,11 @@ function SignUp() {
                             onChange={handleChange}
                             isInvalid={touched.password && errors.password}
                           />
-                          <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">{t(errors.password)}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className="mb-3">
                           <Form.Label htmlFor="passwordConfirmation">
-                            Confirm password
+                            {t('confirmPassword')}
                           </Form.Label>
                           <Form.Control
                             name="passwordConfirmation"
@@ -99,9 +105,9 @@ function SignUp() {
                             onChange={handleChange}
                             isInvalid={touched.passwordConfirmation && errors.passwordConfirmation}
                           />
-                          <Form.Control.Feedback type="invalid">{errors.passwordConfirmation}</Form.Control.Feedback>
+                          <Form.Control.Feedback type="invalid">{t(errors.passwordConfirmation)}</Form.Control.Feedback>
                         </Form.Group>
-                        <Button type="submit" variant="outline-primary">Register</Button>
+                        <Button type="submit" variant="outline-primary">{t('register')}</Button>
                       </fieldset>
                     </Form>
                   )}

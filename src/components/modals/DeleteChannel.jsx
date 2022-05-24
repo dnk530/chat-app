@@ -1,8 +1,10 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import socket from '../../utils/socket.js';
 
 function DeleteChannel({ show, modalInfo, hideModal }) {
+  const { t } = useTranslation();
   const { channel } = modalInfo;
   const handleDelete = (id) => {
     socket.emit('removeChannel', { id }, () => console.log('removed'));
@@ -12,12 +14,12 @@ function DeleteChannel({ show, modalInfo, hideModal }) {
   return (
     <Modal show={show}>
       <Modal.Header closeButton onHide={hideModal}>
-        <Modal.Title>Delete channel</Modal.Title>
+        <Modal.Title>{t('deleteChannel')}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Please confirm</Modal.Body>
+      <Modal.Body>{t('confirmPrompt')}</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={hideModal}>Cancel</Button>
-        <Button variant="danger" type="submit" onClick={() => handleDelete(channel.id)}>Delete</Button>
+        <Button variant="secondary" onClick={hideModal}>{t('cancel')}</Button>
+        <Button variant="danger" type="submit" onClick={() => handleDelete(channel.id)}>{t('delete')}</Button>
       </Modal.Footer>
     </Modal>
   );

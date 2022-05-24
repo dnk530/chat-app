@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ import socket from '../utils/socket.js';
 
 function NewMessageForm() {
   const auth = useAuth();
+  const { t } = useTranslation();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   const f = useFormik({
@@ -40,12 +42,12 @@ function NewMessageForm() {
           type="text"
           name="text"
           aria-label="New message"
-          placeholder="Enter your message..."
+          placeholder={t('messagePrompt')}
           value={f.values.text}
           onChange={f.handleChange}
         />
         <Button type="submit" className="mx-2" disabled={f.isSubmitting}>
-          Send
+          {t('send')}
         </Button>
       </Form.Group>
     </Form>

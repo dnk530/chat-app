@@ -2,21 +2,23 @@ import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import socket from '../../utils/socket.js';
 import { actions as channelsActions, selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
 function AddChannel({ show, hideModal }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
   const f = useFormik({
     initialValues: { text: '' },
     validationSchema: Yup.object().shape({
       text: Yup.string()
-        .min(3, 'Channel name should be longer than 3 characters')
-        .max(20, 'Channel name should be shorter than 20 characters')
-        .notOneOf(channelsList, 'Channel with this name already exists')
-        .required('This field is required'),
+        .min(3, 'errors.channelName')
+        .max(20, 'errors.channelName')
+        .notOneOf(channelsList, 'errors.channelNameNotUnique')
+        .required(),
     }),
     onSubmit: ({ text }) => {
       console.log('errors: ', f.errors);
@@ -38,7 +40,7 @@ function AddChannel({ show, hideModal }) {
   return (
     <Modal show={show}>
       <Modal.Header closeButton onHide={hideModal}>
-        <Modal.Title>Add channel</Modal.Title>
+        <Modal.Title>{t('addChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
@@ -56,21 +58,21 @@ function AddChannel({ show, hideModal }) {
               isInvalid={f.touched.text && f.errors.text}
             />
             <Form.Control.Feedback type="invalid">
-              {f.errors.text}
+              {t(f.errors.text)}
             </Form.Control.Feedback>
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={hideModal}>
-          Cancel
+          {t('cancel')}
         </Button>
         <Button
           type="submit"
           onClick={f.handleSubmit}
           disabled={f.isSubmitting}
         >
-          Submit
+          {t('send')}
         </Button>
       </Modal.Footer>
     </Modal>
