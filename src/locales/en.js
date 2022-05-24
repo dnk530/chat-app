@@ -2,8 +2,10 @@ export default {
   translation: {
     username: 'Username',
     password: 'Password',
-    loginHeader: 'Log in',
-    registration: 'Registration',
+    home: 'Home',
+    login: 'Log In',
+    logout: 'Log Out',
+    registration: 'Sign up',
     register: 'Register',
     confirmPassword: 'Confirm password',
     enter: 'Log in',
@@ -20,6 +22,8 @@ export default {
     confirmPrompt: 'Please, confirm',
     delete: 'Delete',
     rename: 'Rename',
+    en: 'English',
+    ru: 'Russian',
     errors: {
       required: 'Required field',
       userAlreadyExists: 'User already exists',

@@ -19,6 +19,8 @@ import NotFound from './404.jsx';
 import useAuth from '../hooks/index.js';
 import AuthContext from '../contexts/index.js';
 import SignUp from './SignUp.jsx';
+import LanguageSelect from './LanguageSelect.jsx';
+import { useTranslation } from 'react-i18next';
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -63,11 +65,13 @@ function PrivateRoute({ children }) {
 }
 
 function LogOutButton() {
+  const { t } = useTranslation();
   const auth = useAuth();
-  return auth.loggedIn && <Button onClick={auth.logOut}>Log out</Button>;
+  return auth.loggedIn && <Button onClick={auth.logOut} className="text-nowrap">{t('logout')}</Button>;
 }
 
 function App() {
+  const { t } = useTranslation();
   return (
     <AuthProvider>
       <Router>
@@ -76,9 +80,10 @@ function App() {
             <Container>
               <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
               <Nav className="mr-auto">
-                <Nav.Link as={Link} to="/">Home</Nav.Link>
-                <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+                <LanguageSelect />
+                <Nav.Link as={Link} to="/" className="text-nowrap">{t('home')}</Nav.Link>
+                <Nav.Link as={Link} to="/login" className="text-nowrap">{t('login')}</Nav.Link>
+                <Nav.Link as={Link} to="/signup" className="text-nowrap">{t('registration')}</Nav.Link>
                 <LogOutButton />
               </Nav>
             </Container>

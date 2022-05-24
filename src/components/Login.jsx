@@ -81,7 +81,7 @@ function Login() {
         <Col md={8} xl={6}>
           <Card className="shadow-sm">
             <Card.Body>
-              <Card.Title>{t('loginHeader')}</Card.Title>
+              <Card.Title>{t('login')}</Card.Title>
               <LoginForm />
             </Card.Body>
             <Card.Footer className="text-center">

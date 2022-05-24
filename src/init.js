@@ -13,7 +13,7 @@ export default async () => {
     .init({
       resources,
       debug: true,
-      lng: 'en',
+      lng: 'ru',
     });
 
   setLocale({

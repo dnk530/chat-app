@@ -2,7 +2,9 @@ export default {
   translation: {
     username: 'Юзернейм',
     password: 'Пароль',
-    loginHeader: 'Войдите',
+    home: 'Главная',
+    login: 'Вход',
+    logout: 'Выход',
     registration: 'Регистрация',
     register: 'Зарегистрироваться',
     confirmPassword: 'Подтвердите пароль',
@@ -21,6 +23,8 @@ export default {
     confirmPrompt: 'Подтвердите, пожалуйста',
     delete: 'Удалить',
     rename: 'Переименовать',
+    en: 'English',
+    ru: 'Русский',
     errors: {
       required: 'Обязательное поле',
       userAlreadyExists: 'Такой пользователь уже существует',
