@@ -45,6 +45,7 @@ function NewMessageForm() {
           placeholder={t('messagePrompt')}
           value={f.values.text}
           onChange={f.handleChange}
+          autoComplete="off"
         />
         <Button type="submit" className="mx-2" disabled={f.isSubmitting}>
           {t('send')}
