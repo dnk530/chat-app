@@ -1,6 +1,9 @@
 import React from 'react';
+import filterProfanity from 'leo-profanity';
 import { useSelector } from 'react-redux';
 import { selectors as messageSelectors } from '../slices/messagesSlice.js';
+
+filterProfanity.add(filterProfanity.getDictionary('ru'));
 
 function Messages({ channelId }) {
   const messages = useSelector(messageSelectors.selectAll)
@@ -10,7 +13,7 @@ function Messages({ channelId }) {
       <div key={id} className="text-break">
         <b>{username}</b>
         :&nbsp;
-        {text}
+        {filterProfanity.clean(text, '*')}
       </div>
     ))
   );
