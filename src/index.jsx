@@ -14,8 +14,7 @@ import runInit from './init.js';
 import socket from './utils/socket.js';
 import i18n from './utils/i18n.js';
 
-import 'dotenv/config';
-console.log(process.env);
+console.log(process.env.POST_CLIENT_ITEM_ACCESS_TOKEN);
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
