@@ -12,7 +12,7 @@ export default async () => {
     .use(initReactI18next)
     .init({
       resources,
-      debug: true,
+      debug: process.env.NODE_ENV !== 'production',
       lng: 'ru',
     });
 
