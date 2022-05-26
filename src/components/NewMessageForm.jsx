@@ -46,6 +46,7 @@ function NewMessageForm() {
           value={f.values.text}
           onChange={f.handleChange}
           autoComplete="off"
+          disabled={f.isSubmitting}
         />
         <Button type="submit" className="mx-2" disabled={f.isSubmitting}>
           {t('send')}
