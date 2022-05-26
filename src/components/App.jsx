@@ -91,7 +91,7 @@ function App() {
             <Container fluid className="d-flex flex-column p-0 h-100">
               <Navbar bg="white" className="mb-3 shadow-sm px-2">
                 <Container>
-                  <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
+                  <Navbar.Brand as={Link} to="/">{t('appName')}</Navbar.Brand>
                   <Nav className="mr-auto">
                     <LanguageSelect />
                     <Nav.Link as={Link} to="/" className="text-nowrap">{t('home')}</Nav.Link>

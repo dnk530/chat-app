@@ -16,11 +16,11 @@ function ChannelButton({
   return (
     <Nav.Item key={id} className="w-100">
       <ButtonGroup className="w-100">
-        <Button variant={isActive ? 'secondary' : 'link'} onClick={handleSelect} className="rounded-0 text-start text-truncate">
+        <Button variant={isActive ? 'secondary' : 'light'} onClick={handleSelect} className="rounded-0 text-start text-truncate">
           {`#${name}`}
         </Button>
         {removable && (
-          <DropdownButton variant={isActive ? 'secondary' : 'link'} as={ButtonGroup} title="" id="bg-nested-dropdown" className="rounded-0">
+          <DropdownButton variant={isActive ? 'secondary' : 'light'} as={ButtonGroup} title="" id="bg-nested-dropdown" className="rounded-0">
             <Dropdown.Item onClick={handleRename}>{t('rename')}</Dropdown.Item>
             <Dropdown.Item onClick={handleDelete}>{t('delete')}</Dropdown.Item>
           </DropdownButton>

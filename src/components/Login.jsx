@@ -52,6 +52,7 @@ function LoginForm() {
         <Form.Control
           name="username"
           placeholder={t('username')}
+          autoComplete="username"
           onChange={f.handleChange}
           value={f.values.username}
           isInvalid={authFailed}
@@ -65,6 +66,7 @@ function LoginForm() {
           type="password"
           name="password"
           placeholder={t('password')}
+          autoComplete="current-password"
           onChange={f.handleChange}
           value={f.values.password}
           isInvalid={authFailed}

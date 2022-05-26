@@ -79,6 +79,7 @@ function SignUp() {
                           <Form.Control
                             name="username"
                             type="text"
+                            autoComplete="username"
                             value={values.username}
                             onChange={handleChange}
                             isInvalid={touched.username && errors.username}
@@ -93,6 +94,7 @@ function SignUp() {
                           <Form.Control
                             name="password"
                             type="password"
+                            autoComplete="new-password"
                             value={values.password}
                             onChange={handleChange}
                             isInvalid={touched.password && errors.password}
@@ -106,6 +108,7 @@ function SignUp() {
                           <Form.Control
                             name="passwordConfirmation"
                             type="password"
+                            autoComplete="new-password"
                             value={values.passwordConfirmation}
                             onChange={handleChange}
                             isInvalid={touched.passwordConfirmation && errors.passwordConfirmation}

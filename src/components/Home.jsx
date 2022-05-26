@@ -54,8 +54,8 @@ function Home() {
       <DeleteChannel show={modalInfo.type === 'deleteChannel'} hideModal={hideModal} modalInfo={modalInfo} />
       <RenameChannel show={modalInfo.type === 'renameChannel'} hideModal={hideModal} modalInfo={modalInfo} />
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
-        <Row className="h-100">
-          <Col className="col-4 bg-light pt-4 px-0 border-end overflow-hidden">
+        <Row className="h-100 bg-white">
+          <Col className="col-4 col-md-2  bg-light pt-4 px-0 border-end">
             <Container className="d-flex justify-content-between ps-0 pe-2 mb-2">
               <span className="px-3">
                 {t('channels')}
@@ -100,7 +100,7 @@ function Home() {
               <Row className="bg-white px-2 overflow-auto">
                 <Messages channelId={currentChannelId} />
               </Row>
-              <Row className="mt-auto py-5">
+              <Row className="mt-auto px-3 py-3">
                 <NewMessageForm />
               </Row>
             </Container>
