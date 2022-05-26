@@ -24,6 +24,7 @@ export default {
     rename: 'Rename',
     en: 'English',
     ru: 'Russian',
+    appName: 'Hexlet Chat',
     notifications: {
       channelAdded: 'Channel added',
       channelRenamed: 'Channel renamed',
