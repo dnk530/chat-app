@@ -70,6 +70,7 @@ function Home() {
             >
               {channels.map((channel) => (
                 <ChannelButton
+                  key={channel.id}
                   channel={channel}
                   isActive={channel.id === currentChannelId}
                   handleSelect={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
