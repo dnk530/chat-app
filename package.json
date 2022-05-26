@@ -5,7 +5,7 @@
   "main": "server/plugin.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "prebuild": "rm -rf dist",
     "build": "webpack",
     "start": "fastify start server/plugin.js -l info -P -a 0.0.0.0"
