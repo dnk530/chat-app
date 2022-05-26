@@ -1,6 +1,6 @@
 export default {
   translation: {
-    username: 'Юзернейм',
+    username: 'Имя пользователя',
     password: 'Пароль',
     home: 'Главная',
     login: 'Вход',
@@ -33,7 +33,7 @@ export default {
     errors: {
       required: 'Обязательное поле',
       userAlreadyExists: 'Такой пользователь уже существует',
-      invalidCredentials: 'Неверное имя пользователя или пароль',
+      invalidCredentials: 'Неверные имя пользователя или пароль',
       passwordConfirmation: 'Пароли должны совпадать',
       usernameField: 'От 3 до 20 символов',
       passwordField: 'Не менее 6 символов',
