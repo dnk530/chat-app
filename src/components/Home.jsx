@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,6 +19,7 @@ function Home() {
   const auth = useAuth();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const messageBox = useRef(null);
 
   useEffect(() => {
     if (!auth.loggedIn) {
@@ -28,6 +29,12 @@ function Home() {
     dispatch(fetchAllMessages());
     return undefined;
   }, []);
+
+  useEffect(() => {
+    if (messageBox.current.lastChild) {
+      messageBox.current.lastChild.scrollIntoView();
+    }
+  });
 
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -97,7 +104,7 @@ function Home() {
                   !
                 </Col>
               </Row>
-              <Row className="bg-white px-2 overflow-auto">
+              <Row ref={messageBox} className="bg-white px-2 overflow-auto">
                 <Messages channelId={currentChannelId} />
               </Row>
               <Row className="mt-auto px-3 py-3">
