@@ -68,7 +68,6 @@
     "@jest/globals": "^27.5.1",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.6.0",
-    "dotenv": "^16.0.1",
     "dotenv-webpack": "^7.1.0",
     "eslint": "^8.15.0",
     "eslint-config-airbnb": "^19.0.4",

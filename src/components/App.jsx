@@ -25,11 +25,11 @@ import SignUp from './SignUp.jsx';
 import LanguageSelect from './LanguageSelect.jsx';
 
 const rollbarConfig = {
-  accessToken: 'process.env.POST_CLIENT_ITEM_ACCESS_TOKEN',
+  accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
   payload: {
-    environment: 'production',
+    environment: process.env.NODE_ENV,
   },
 };
 
@@ -87,39 +87,39 @@ function App() {
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
         <AuthProvider>
-        <Router>
-          <Container fluid className="d-flex flex-column p-0 h-100">
-            <Navbar bg="white" className="mb-3 shadow-sm px-2">
-              <Container>
-                <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
-                <Nav className="mr-auto">
-                  <LanguageSelect />
-                  <Nav.Link as={Link} to="/" className="text-nowrap">{t('home')}</Nav.Link>
-                  <Nav.Link as={Link} to="/login" className="text-nowrap">{t('login')}</Nav.Link>
-                  <Nav.Link as={Link} to="/signup" className="text-nowrap">{t('registration')}</Nav.Link>
-                  <LogOutButton />
-                </Nav>
-              </Container>
-            </Navbar>
-            <Switch>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/">
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              </Route>
-              <Route path="/signup">
-                <SignUp />
-              </Route>
-              <Route path="*">
-                <NotFound />
-              </Route>
-            </Switch>
-          </Container>
-          <ToastContainer />
-        </Router>
+          <Router>
+            <Container fluid className="d-flex flex-column p-0 h-100">
+              <Navbar bg="white" className="mb-3 shadow-sm px-2">
+                <Container>
+                  <Navbar.Brand as={Link} to="/">Chat</Navbar.Brand>
+                  <Nav className="mr-auto">
+                    <LanguageSelect />
+                    <Nav.Link as={Link} to="/" className="text-nowrap">{t('home')}</Nav.Link>
+                    <Nav.Link as={Link} to="/login" className="text-nowrap">{t('login')}</Nav.Link>
+                    <Nav.Link as={Link} to="/signup" className="text-nowrap">{t('registration')}</Nav.Link>
+                    <LogOutButton />
+                  </Nav>
+                </Container>
+              </Navbar>
+              <Switch>
+                <Route path="/login">
+                  <Login />
+                </Route>
+                <Route exact path="/">
+                  <PrivateRoute>
+                    <Home />
+                  </PrivateRoute>
+                </Route>
+                <Route path="/signup">
+                  <SignUp />
+                </Route>
+                <Route path="*">
+                  <NotFound />
+                </Route>
+              </Switch>
+            </Container>
+            <ToastContainer />
+          </Router>
         </AuthProvider>
       </ErrorBoundary>
     </Provider>
