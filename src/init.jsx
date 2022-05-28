@@ -49,6 +49,7 @@ export default async (socket) => {
 
   const mountNode = document.getElementById('chat');
   console.log('>>> mount node:', mountNode);
+  console.log('>>> mount node:', document.getElementById('chat'));
   const root = ReactDOM.createRoot(mountNode);
   root.render(
     <Provider store={store}>
