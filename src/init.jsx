@@ -1,13 +1,15 @@
-import { initReactI18next } from 'react-i18next';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { setLocale } from 'yup';
+import App from './components/App.jsx';
 import { actions as messagesActions } from './slices/messagesSlice.js';
 import { actions as channelsActions } from './slices/channelsSlice.js';
 import resources from './locales/index.js';
 import i18n from './utils/i18n.js';
-import socket from './utils/socket.js';
 import store from './slices/index.js';
 
-export default async () => {
+export default async (socket) => {
   await i18n
     .use(initReactI18next)
     .init({
@@ -43,4 +45,12 @@ export default async () => {
   socket.on('renameChannel', (message) => {
     store.dispatch(channelsActions.renameChannel(message));
   });
+
+  return (
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
+        <App />
+      </I18nextProvider>
+    </Provider>
+  );
 };
