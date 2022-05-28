@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-runInit();
+runInit(socket);
 
 const mountNode = document.getElementById('chat');
 const root = ReactDOM.createRoot(mountNode);
@@ -29,5 +29,3 @@ root.render(
     </I18nextProvider>
   </Provider>,
 );
-
-export default socket;
