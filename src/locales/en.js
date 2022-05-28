@@ -2,6 +2,7 @@ export default {
   translation: {
     username: 'Username',
     password: 'Password',
+    nickname: 'Your nickname',
     home: 'Home',
     login: 'Log In',
     logout: 'Log Out',

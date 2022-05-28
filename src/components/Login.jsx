@@ -48,7 +48,7 @@ function LoginForm() {
   return (
     <Form onSubmit={f.handleSubmit}>
       <Form.Group className="mb-3" controlId="username">
-        <Form.Label>{t('username')}</Form.Label>
+        <Form.Label>{t('nickname')}</Form.Label>
         <Form.Control
           name="username"
           placeholder={t('username')}

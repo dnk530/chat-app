@@ -1,6 +1,7 @@
 export default {
   translation: {
     username: 'Имя пользователя',
+    nickname: 'Ваш ник',
     password: 'Пароль',
     home: 'Главная',
     login: 'Вход',
