@@ -11,8 +11,7 @@
     "start": "fastify start server/plugin.js -l info -P -a 0.0.0.0"
   },
   "jest": {
-    "transform": {},
-    "testEnvironment": "node"
+    "transform": {}
   },
   "repository": {
     "type": "git",
@@ -46,9 +45,9 @@
     "point-of-view": "^5.1.0",
     "popper.js": "^1.16.1",
     "pug": "^3.0.2",
-    "react": "18.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-bootstrap": "^2.3.1",
-    "react-dom": "^18.1.0",
     "react-i18next": "^11.16.9",
     "react-redux": "^8.0.1",
     "react-router-dom": "^5.3.1",
