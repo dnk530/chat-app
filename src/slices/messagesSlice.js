@@ -1,4 +1,4 @@
-import { createSlice, createEntityAdapter, createAsyncThunk, current } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import getData from '../utils/fetcher.js';
 import { actions as channelsActions } from './channelsSlice.js';
 

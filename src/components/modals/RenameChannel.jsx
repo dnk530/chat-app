@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -9,6 +9,7 @@ import socket from '../../utils/socket.js';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
 function RenameChannel({ show, modalInfo, hideModal }) {
+  const inputRef = useRef(null);
   const { t } = useTranslation();
   const { channel } = modalInfo;
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
@@ -37,7 +38,14 @@ function RenameChannel({ show, modalInfo, hideModal }) {
   });
 
   return (
-    <Modal show={show}>
+    <Modal
+      show={show}
+      onEntered={() => {
+        inputRef.current.focus();
+        inputRef.current.value = channel.name;
+        inputRef.current.select();
+      }}
+    >
       <Modal.Header closeButton onHide={hideModal}>
         <Modal.Title>{t('renameChannel')}</Modal.Title>
       </Modal.Header>
@@ -46,9 +54,9 @@ function RenameChannel({ show, modalInfo, hideModal }) {
           <Form.Group>
             <Form.Label className="visually-hidden">Enter new channel name</Form.Label>
             <Form.Control
-              autoFocus
               type="text"
               name="text"
+              ref={inputRef}
               value={f.values.text}
               onChange={f.handleChange}
               disabled={f.isSubmitting}

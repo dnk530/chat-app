@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -7,6 +7,8 @@ import useAuth from '../hooks/index.js';
 import socket from '../utils/socket.js';
 
 function NewMessageForm() {
+  const messageInput = useRef(null);
+  useEffect(() => messageInput.current && messageInput.current.focus());
   const auth = useAuth();
   const { t } = useTranslation();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -41,6 +43,7 @@ function NewMessageForm() {
         <Form.Control
           type="text"
           name="text"
+          ref={messageInput}
           aria-label="New message"
           placeholder={t('messagePrompt')}
           value={f.values.text}

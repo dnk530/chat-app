@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import socket from '../../utils/socket.js';
 import { actions as channelsActions, selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
 function AddChannel({ show, hideModal }) {
+  const inputRef = useRef(null);
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
@@ -39,7 +40,10 @@ function AddChannel({ show, hideModal }) {
   });
 
   return (
-    <Modal show={show}>
+    <Modal
+      show={show}
+      onEntered={() => inputRef.current.focus()}
+    >
       <Modal.Header closeButton onHide={hideModal}>
         <Modal.Title>{t('addChannel')}</Modal.Title>
       </Modal.Header>
@@ -50,9 +54,9 @@ function AddChannel({ show, hideModal }) {
               Enter channel name
             </Form.Label>
             <Form.Control
-              autoFocus
               type="text"
               name="text"
+              ref={inputRef}
               value={f.values.text}
               onChange={f.handleChange}
               disabled={f.isSubmitting}
