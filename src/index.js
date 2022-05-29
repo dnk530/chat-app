@@ -3,7 +3,7 @@
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 import '../assets/application.scss';
-import ReactDOM from 'react-dom/client';
+import { render } from 'react-dom';
 import runInit from './init.jsx';
 import socket from './utils/socket.js';
 
@@ -12,6 +12,4 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const mountNode = document.getElementById('chat');
-const root = ReactDOM.createRoot(mountNode);
-runInit(socket).then((vdom) => root.render(vdom));
-
+runInit(socket).then((vdom) => render(vdom, mountNode));
