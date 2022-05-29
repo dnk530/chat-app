@@ -1,0 +1,21 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install & build
+        run: | 
+          make install
+          make build
+        env:
+          CI: true
+      - name: Run linter
+        run: make lint
