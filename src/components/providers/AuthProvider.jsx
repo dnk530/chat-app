@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import AuthContext from '../../contexts/index.js';
+import { AuthContext } from '../../contexts/index.js';
 
 export default function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(false);

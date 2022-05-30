@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import axios from 'axios';
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 
 function SignUp() {
   const signupSchema = Yup.object().shape({

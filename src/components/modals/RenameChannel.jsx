@@ -5,11 +5,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import socket from '../../utils/socket.js';
+import { useApi } from '../../hooks/index.js';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
 function RenameChannel({ show, modalInfo, hideModal }) {
   const inputRef = useRef(null);
+  const api = useApi();
   const { t } = useTranslation();
   const { channel } = modalInfo;
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
@@ -23,14 +24,17 @@ function RenameChannel({ show, modalInfo, hideModal }) {
         .required(),
     }),
     onSubmit: ({ text }) => {
+      const newChannel = { name: text, id: channel.id };
       const promise = new Promise((resolve) => {
-        socket.emit('renameChannel', { name: text, id: channel.id }, (res) => {
-          if (res.status === 'ok') {
-            resolve();
-            f.resetForm();
-            hideModal();
-            toast.success(t('notifications.channelRenamed'));
+        api.renameChannel(newChannel, (err) => {
+          if (err) {
+            toast.error(t('errors.networkError'));
+            return;
           }
+          resolve();
+          f.resetForm();
+          hideModal();
+          toast.success(t('notifications.channelRenamed'));
         });
       });
       return promise;

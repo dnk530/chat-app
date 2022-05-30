@@ -2,13 +2,18 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import socket from '../../utils/socket.js';
+import { useApi } from '../../hooks/index.js';
 
 function DeleteChannel({ show, modalInfo, hideModal }) {
   const { t } = useTranslation();
+  const api = useApi();
   const { channel } = modalInfo;
   const handleDelete = (id) => {
-    socket.emit('removeChannel', { id }, () => {
+    api.deleteChannel({ id }, (err) => {
+      if (err) {
+        toast.error(t('errors.networkError'));
+        return;
+      }
       toast.success(t('notifications.channelDeleted'));
       hideModal();
     });

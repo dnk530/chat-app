@@ -18,7 +18,7 @@ import Login from './Login.jsx';
 import Home from './Home.jsx';
 import NotFound from './404.jsx';
 
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 import SignUp from './SignUp.jsx';
 import LanguageSelect from './LanguageSelect.jsx';
 

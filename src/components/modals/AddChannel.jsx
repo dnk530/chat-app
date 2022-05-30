@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import socket from '../../utils/socket.js';
+import { useApi } from '../../hooks/index.js';
 import { actions as channelsActions, selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
 function AddChannel({ show, hideModal }) {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const api = useApi();
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
   const f = useFormik({
     initialValues: { text: '' },
@@ -23,16 +24,19 @@ function AddChannel({ show, hideModal }) {
         .required(),
     }),
     onSubmit: ({ text }) => {
+      const channel = { name: text };
       const promise = new Promise((resolve) => {
-        socket.emit('newChannel', { name: text }, ({ status, data }) => {
-          if (status === 'ok') {
-            resolve();
-            f.resetForm();
-            hideModal();
-            dispatch(channelsActions.addChannel(data));
-            dispatch(channelsActions.setCurrentChannelId(data.id));
-            toast.success(t('notifications.channelAdded'));
+        api.addNewChannel(channel, (err, data) => {
+          if (err) {
+            toast.error(t('errors.networkError'));
+            return;
           }
+          resolve();
+          f.resetForm();
+          hideModal();
+          dispatch(channelsActions.addChannel(data));
+          dispatch(channelsActions.setCurrentChannelId(data.id));
+          toast.success(t('notifications.channelAdded'));
         });
       });
       return promise;

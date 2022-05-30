@@ -1,9 +1,10 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import getData from '../utils/fetcher.js';
 
 const channelsAdapter = createEntityAdapter();
 
-const initialState = channelsAdapter.getInitialState({ currentChannelId: null });
+const initialState = channelsAdapter.getInitialState({ currentChannelId: null, loading: 'idle', error: null });
 
 export const fetchAllChannels = createAsyncThunk(
   'channels/fetchAll',
@@ -27,7 +28,13 @@ const channelSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchAllChannels.pending, (state) => {
+        state.loading = 'loading';
+        state.error = null;
+      })
       .addCase(fetchAllChannels.fulfilled, (state, action) => {
+        state.loading = 'idle';
+        state.error = null;
         const { channels, currentChannelId } = action.payload;
         channelsAdapter.addMany(state, channels);
         if (state.currentChannelId === null) {

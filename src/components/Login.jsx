@@ -12,7 +12,7 @@ import axios from 'axios';
 import { Redirect, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 
 const routes = {
   login: '/api/v1/login',

@@ -10,6 +10,7 @@ import { actions as channelsActions } from './slices/channelsSlice.js';
 import resources from './locales/index.js';
 import store from './slices/index.js';
 import AuthProvider from './components/providers/AuthProvider.jsx';
+import ApiProvider from './components/providers/ApiProvider.jsx';
 
 const rollbarConfig = {
   accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
@@ -65,9 +66,11 @@ export default async (socket) => {
       <RollbarProvider config={rollbarConfig}>
         <ErrorBoundary>
           <I18nextProvider i18n={i18n}>
-            <AuthProvider>
-              <App />
-            </AuthProvider>
+            <ApiProvider socketInstance={socket}>
+              <AuthProvider>
+                <App />
+              </AuthProvider>
+            </ApiProvider>
           </I18nextProvider>
         </ErrorBoundary>
       </RollbarProvider>

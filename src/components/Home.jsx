@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
-  Row, Col, Container, Nav, Button,
+  Row, Col, Container, Nav, Button, Placeholder,
 } from 'react-bootstrap';
 
 import { actions as channelActions, fetchAllChannels, selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import { fetchAllMessages, selectors as messagesSelectors } from '../slices/messagesSlice.js';
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
 import Messages from './Messages.jsx';
 import ChannelButton from './ChannelButton.jsx';
@@ -38,6 +38,7 @@ function Home() {
 
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const loadingState = useSelector((state) => state.channels.loading);
   const numberOfMessages = useSelector(messagesSelectors.selectAll)
     .filter((m) => m.channelId === currentChannelId)
     .length;
@@ -75,23 +76,31 @@ function Home() {
               variant="pills"
               className="d-flex flex-column px-2"
             >
-              {channels.map((channel) => (
-                <ChannelButton
-                  key={channel.id}
-                  channel={channel}
-                  isActive={channel.id === currentChannelId}
-                  handleSelect={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
-                  handleRename={showModal('renameChannel', channel)}
-                  handleDelete={showModal('deleteChannel', channel)}
-                />
-              ))}
+              {loadingState === 'loading'
+                ? (
+                  <Placeholder animation="glow">
+                    <Placeholder as="p" xs={12} size="lg" bg="secondary" />
+                    <Placeholder as="p" xs={8} size="lg" bg="secondary" />
+                    <Placeholder as="p" xs={10} size="lg" bg="secondary" />
+                  </Placeholder>
+                )
+                : channels.map((channel) => (
+                  <ChannelButton
+                    key={channel.id}
+                    channel={channel}
+                    isActive={channel.id === currentChannelId}
+                    handleSelect={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
+                    handleRename={showModal('renameChannel', channel)}
+                    handleDelete={showModal('deleteChannel', channel)}
+                  />
+                ))}
             </Nav>
           </Col>
           <Col className="h-100">
             <Container fluid className="h-100 p-0 d-flex flex-column">
               <Row className="mb-3 p-2 bg-light shadow-sm small">
                 <Col>
-                  <span>{`#${channelName}`}</span>
+                  <span>{`#${channelName || ''}`}</span>
                   <br />
                   <span className="text-muted">
                     {t('message', { count: numberOfMessages })}
@@ -108,7 +117,7 @@ function Home() {
                 <Messages channelId={currentChannelId} />
               </Row>
               <Row className="mt-auto px-3 py-3">
-                <NewMessageForm />
+                {loadingState === 'loading' ? <NewMessageForm isLoading /> : <NewMessageForm />}
               </Row>
             </Container>
           </Col>
