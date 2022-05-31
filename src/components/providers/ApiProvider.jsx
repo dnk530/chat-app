@@ -36,13 +36,13 @@ export default function ApiProvider({ children, socketInstance }) {
     });
   };
 
-  const value = {
+  const value = useMemo(() => ({
     sendNewMessage,
     socketInstance,
     addNewChannel,
     renameChannel,
     deleteChannel,
-  };
+  }));
 
   return (
     <ApiContext.Provider value={value}>

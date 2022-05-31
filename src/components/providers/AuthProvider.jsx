@@ -27,7 +27,9 @@ export default function AuthProvider({ children }) {
     if (!loggedIn && userId.token) {
       logIn(userId.username);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log('no token');
+  }
 
   return (
     <AuthContext.Provider value={value}>
