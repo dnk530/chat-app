@@ -19,6 +19,7 @@ export default {
     messagePrompt: 'Enter message',
     newMessage: 'New message',
     addChannel: 'Add channel',
+    channelName: 'Channel name',
     deleteChannel: 'Remove channel',
     renameChannel: 'Rename channel',
     confirmPrompt: 'Please, confirm',

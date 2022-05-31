@@ -53,13 +53,12 @@ function AddChannel({ show, hideModal }) {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
-          <Form.Group>
+          <Form.Group controlId="text">
             <Form.Label className="visually-hidden">
-              Enter channel name
+              {t('channelName')}
             </Form.Label>
             <Form.Control
               type="text"
-              name="text"
               ref={inputRef}
               value={f.values.text}
               onChange={f.handleChange}

@@ -20,6 +20,7 @@ export default {
     messagePrompt: 'Введите сообщение',
     newMessage: 'Новое сообщение',
     addChannel: 'Добавить канал',
+    channelName: 'Имя канала',
     deleteChannel: 'Удалить канал',
     renameChannel: 'Переименовать канал',
     confirmPrompt: 'Подтвердите, пожалуйста',
