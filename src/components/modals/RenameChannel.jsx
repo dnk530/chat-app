@@ -15,16 +15,16 @@ function RenameChannel({ show, modalInfo, hideModal }) {
   const { channel } = modalInfo;
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
   const f = useFormik({
-    initialValues: { text: '' },
+    initialValues: { newChannelName: '' },
     validationSchema: Yup.object().shape({
-      text: Yup.string()
+      newChannelName: Yup.string()
         .min(3, 'errors.channelName')
         .max(20, 'errors.channelName')
         .notOneOf(channelsList, 'errors.channelNameNotUnique')
         .required(),
     }),
-    onSubmit: ({ text }) => {
-      const newChannel = { name: text, id: channel.id };
+    onSubmit: ({ newChannelName }) => {
+      const newChannel = { name: newChannelName, id: channel.id };
       const promise = new Promise((resolve) => {
         api.renameChannel(newChannel, (err) => {
           if (err) {
@@ -55,19 +55,18 @@ function RenameChannel({ show, modalInfo, hideModal }) {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
-          <Form.Group>
+          <Form.Group controlId="newChannelName">
             <Form.Label className="visually-hidden">Enter new channel name</Form.Label>
             <Form.Control
               type="text"
-              name="text"
               ref={inputRef}
-              value={f.values.text}
+              value={f.values.newChannelName}
               onChange={f.handleChange}
               disabled={f.isSubmitting}
-              isInvalid={f.touched.text && f.errors.text}
+              isInvalid={f.touched.newChannelName && f.errors.newChannelName}
             />
             <Form.Control.Feedback type="invalid">
-              {t(f.errors.text)}
+              {t(f.errors.newChannelName)}
             </Form.Control.Feedback>
           </Form.Group>
         </Form>
@@ -77,7 +76,7 @@ function RenameChannel({ show, modalInfo, hideModal }) {
           {t('cancel')}
         </Button>
         <Button type="submit" onClick={f.handleSubmit}>
-          {t('rename')}
+          {t('send')}
         </Button>
       </Modal.Footer>
     </Modal>
