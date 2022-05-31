@@ -51,10 +51,10 @@ export default async (socket) => {
     const { id } = message;
     const { currentChannelId } = store.getState().channels;
 
-    store.dispatch(channelsActions.removeChannel(id));
     if (currentChannelId === id) {
       store.dispatch(channelsActions.setCurrentChannelId(1));
     }
+    store.dispatch(channelsActions.removeChannel(id));
   });
 
   socket.on('renameChannel', (message) => {
