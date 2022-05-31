@@ -73,7 +73,7 @@ function LoginForm() {
           disabled={f.isSubmitting}
           required
         />
-        <Form.Control.Feedback type="invalid">{t('errors.invalidCredentials')}</Form.Control.Feedback>
+        {authFailed && <Form.Control.Feedback type="invalid">{t('errors.invalidCredentials')}</Form.Control.Feedback>}
       </Form.Group>
       <Button type="submit" variant="outline-primary" disabled={f.isSubmitting}>{t('enter')}</Button>
     </Form>
