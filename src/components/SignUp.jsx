@@ -28,104 +28,122 @@ function SignUp() {
   const usernameRef = useRef(null);
   const { t } = useTranslation();
 
-  return (auth.loggedIn
-    ? <Redirect to="/" />
-    : (
-      <Container fluid className="h-100">
-        <Row className="h-100 justify-content-center align-items-center">
-          <Col md={8} xl={6}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <Card.Title>{t('registration')}</Card.Title>
-                <Formik
-                  initialValues={{
-                    username: '',
-                    password: '',
-                    passwordConfirmation: '',
-                  }}
-                  validationSchema={signupSchema}
-                  onSubmit={(values, actions) => {
-                    const { username, password } = values;
-                    axios.post('/api/v1/signup', { username, password })
-                      .then((res) => {
-                        const { token } = res.data;
-                        localStorage.setItem('userId', JSON.stringify({ token }));
-                        actions.resetForm();
+  return auth.loggedIn ? (
+    <Redirect to="/" />
+  ) : (
+    <Container fluid className="h-100">
+      <Row className="h-100 justify-content-center align-items-center">
+        <Col md={8} xl={6}>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title>{t('registration')}</Card.Title>
+              <Formik
+                initialValues={{
+                  username: '',
+                  password: '',
+                  passwordConfirmation: '',
+                }}
+                validationSchema={signupSchema}
+                onSubmit={(values, actions) => {
+                  const { username, password } = values;
+                  axios
+                    .post('/api/v1/signup', { username, password })
+                    .then((res) => {
+                      const { token } = res.data;
+                      localStorage.setItem('userId', JSON.stringify({ token }));
+                      actions.resetForm();
+                      actions.setSubmitting(false);
+                      auth.logIn(username);
+                    })
+                    .catch((e) => {
+                      if (e.response.status === 409) {
+                        actions.setErrors({
+                          username: 'errors.userAlreadyExists',
+                        });
                         actions.setSubmitting(false);
-                        auth.logIn(username);
-                      })
-                      .catch((e) => {
-                        if (e.response.status === 409) {
-                          actions.setErrors({ username: 'errors.userAlreadyExists' });
-                          actions.setSubmitting(false);
-                          usernameRef.current.focus();
-                        }
-                        if (e.code === 'ERR_NETWORK') {
-                          toast.error(t('errors.networkError'));
-                          actions.setSubmitting(false);
-                        }
-                      });
-                  }}
-                >
-                  {({
-                    handleSubmit, handleChange, values, errors, touched, isSubmitting,
-                  }) => (
-                    <Form onSubmit={handleSubmit}>
-                      <fieldset disabled={isSubmitting}>
-                        <Form.Group className="mb-3">
-                          <Form.Label htmlFor="username">
-                            {t('username')}
-                          </Form.Label>
-                          <Form.Control
-                            name="username"
-                            type="text"
-                            autoComplete="username"
-                            value={values.username}
-                            onChange={handleChange}
-                            isInvalid={touched.username && errors.username}
-                            ref={usernameRef}
-                          />
-                          <Form.Control.Feedback type="invalid">{t(errors.username)}</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label htmlFor="password">
-                            {t('password')}
-                          </Form.Label>
-                          <Form.Control
-                            name="password"
-                            type="password"
-                            autoComplete="new-password"
-                            value={values.password}
-                            onChange={handleChange}
-                            isInvalid={touched.password && errors.password}
-                          />
-                          <Form.Control.Feedback type="invalid">{t(errors.password)}</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <Form.Label htmlFor="passwordConfirmation">
-                            {t('confirmPassword')}
-                          </Form.Label>
-                          <Form.Control
-                            name="passwordConfirmation"
-                            type="password"
-                            autoComplete="new-password"
-                            value={values.passwordConfirmation}
-                            onChange={handleChange}
-                            isInvalid={touched.passwordConfirmation && errors.passwordConfirmation}
-                          />
-                          <Form.Control.Feedback type="invalid">{t(errors.passwordConfirmation)}</Form.Control.Feedback>
-                        </Form.Group>
-                        <Button type="submit" variant="outline-primary">{t('register')}</Button>
-                      </fieldset>
-                    </Form>
-                  )}
-                </Formik>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    )
+                        usernameRef.current.focus();
+                      }
+                      if (e.code === 'ERR_NETWORK') {
+                        toast.error(t('errors.networkError'));
+                        actions.setSubmitting(false);
+                      }
+                    });
+                }}
+              >
+                {({
+                  handleSubmit,
+                  handleChange,
+                  values,
+                  errors,
+                  touched,
+                  isSubmitting,
+                }) => (
+                  <Form onSubmit={handleSubmit}>
+                    <fieldset disabled={isSubmitting}>
+                      <Form.Group className="mb-3" controlId="username">
+                        <Form.Label>{t('username')}</Form.Label>
+                        <Form.Control
+                          type="text"
+                          autoComplete="username"
+                          value={values.username}
+                          onChange={handleChange}
+                          isInvalid={touched.username && errors.username}
+                          ref={usernameRef}
+                        />
+                        {errors.username && (
+                        <Form.Control.Feedback type="invalid">
+                          {t(errors.username)}
+                        </Form.Control.Feedback>
+                        )}
+                      </Form.Group>
+                      <Form.Group className="mb-3" controlId="password">
+                        <Form.Label>{t('password')}</Form.Label>
+                        <Form.Control
+                          type="password"
+                          autoComplete="new-password"
+                          value={values.password}
+                          onChange={handleChange}
+                          isInvalid={touched.password && errors.password}
+                        />
+                        {errors.password && (
+                          <Form.Control.Feedback type="invalid">
+                            {t(errors.password)}
+                          </Form.Control.Feedback>
+                        )}
+                      </Form.Group>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="passwordConfirmation"
+                      >
+                        <Form.Label>{t('confirmPassword')}</Form.Label>
+                        <Form.Control
+                          type="password"
+                          autoComplete="new-password"
+                          value={values.passwordConfirmation}
+                          onChange={handleChange}
+                          isInvalid={
+                            touched.passwordConfirmation &&
+                            errors.passwordConfirmation
+                          }
+                        />
+                        {errors.passwordConfirmation && (
+                          <Form.Control.Feedback type="invalid">
+                            {t(errors.passwordConfirmation)}
+                          </Form.Control.Feedback>
+                        )}
+                      </Form.Group>
+                      <Button type="submit" variant="outline-primary">
+                        {t('register')}
+                      </Button>
+                    </fieldset>
+                  </Form>
+                )}
+              </Formik>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
