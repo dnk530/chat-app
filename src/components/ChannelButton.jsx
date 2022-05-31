@@ -30,7 +30,7 @@ function ChannelButton({
             title=""
             id="bg-nested-dropdown"
             className="rounded-0"
-            aria-labelledby={t('manageChannel')}
+            aria-label={t('manageChannel')}
           >
             <Dropdown.Item onClick={handleRename}>{t('rename')}</Dropdown.Item>
             <Dropdown.Item onClick={handleDelete}>{t('delete')}</Dropdown.Item>
