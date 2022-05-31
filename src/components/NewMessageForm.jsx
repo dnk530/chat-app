@@ -18,14 +18,14 @@ function NewMessageForm({ isLoading }) {
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   const f = useFormik({
-    initialValues: { text: '' },
+    initialValues: { newMessage: '' },
     onSubmit: (values) => {
-      const { text } = values;
+      const { newMessage } = values;
       const { username } = auth;
       const channelId = currentChannelId;
       const newPromise = new Promise((resolve) => {
         const message = {
-          text,
+          text: newMessage,
           username,
           channelId,
           timestamp: Date.now(),
@@ -43,14 +43,13 @@ function NewMessageForm({ isLoading }) {
 
   return (
     <Form onSubmit={f.handleSubmit}>
-      <Form.Group className="d-flex" controlId="text">
+      <Form.Group className="d-flex" controlId="newMessage">
         <Form.Label visuallyHidden>{t('newMessage')}</Form.Label>
         <Form.Control
           type="text"
           ref={messageInput}
-          aria-label="New message"
           placeholder={t('messagePrompt')}
-          value={f.values.text}
+          value={f.values.newMessage}
           onChange={f.handleChange}
           autoComplete="off"
           disabled={f.isSubmitting || isLoading}

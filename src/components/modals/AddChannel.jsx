@@ -15,16 +15,16 @@ function AddChannel({ show, hideModal }) {
   const api = useApi();
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
   const f = useFormik({
-    initialValues: { text: '' },
+    initialValues: { channelName: '' },
     validationSchema: Yup.object().shape({
-      text: Yup.string()
+      channelName: Yup.string()
         .min(3, 'errors.channelName')
         .max(20, 'errors.channelName')
         .notOneOf(channelsList, 'errors.channelNameNotUnique')
         .required(),
     }),
-    onSubmit: ({ text }) => {
-      const channel = { name: text };
+    onSubmit: ({ channelName }) => {
+      const channel = { name: channelName };
       const promise = new Promise((resolve) => {
         api.addNewChannel(channel, (err, data) => {
           if (err) {
@@ -53,7 +53,7 @@ function AddChannel({ show, hideModal }) {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
-          <Form.Group controlId="text">
+          <Form.Group controlId="channelName">
             <Form.Label className="visually-hidden">
               {t('channelName')}
             </Form.Label>
@@ -61,13 +61,13 @@ function AddChannel({ show, hideModal }) {
               autoFocus
               type="text"
               ref={inputRef}
-              value={f.values.text}
+              value={f.values.channelName}
               onChange={f.handleChange}
               disabled={f.isSubmitting}
-              isInvalid={f.touched.text && f.errors.text}
+              isInvalid={f.touched.channelName && f.errors.channelName}
             />
             <Form.Control.Feedback type="invalid">
-              {t(f.errors.text)}
+              {t(f.errors.channelName)}
             </Form.Control.Feedback>
           </Form.Group>
         </Form>
