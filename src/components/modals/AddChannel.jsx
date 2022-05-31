@@ -31,12 +31,12 @@ function AddChannel({ show, hideModal }) {
             toast.error(t('errors.networkError'));
             return;
           }
-          resolve();
           f.resetForm();
           hideModal();
           dispatch(channelsActions.addChannel(data));
           dispatch(channelsActions.setCurrentChannelId(data.id));
           toast.success(t('notifications.channelAdded'));
+          resolve();
         });
       });
       return promise;
