@@ -30,7 +30,7 @@ function LoginForm() {
         setAuthFailed(false);
         const response = await axios.post(routes.login, { username, password });
         const { data: { token } } = response;
-        localStorage.setItem('userId', JSON.stringify({ token }));
+        localStorage.setItem('userId', JSON.stringify({ token, username }));
         f.resetForm();
         auth.logIn(username);
       } catch (e) {
