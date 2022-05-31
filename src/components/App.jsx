@@ -38,16 +38,19 @@ function App() {
   return (
     <Router>
       <Container fluid className="d-flex flex-column p-0 h-100">
-        <Navbar bg="white" className="mb-3 shadow-sm px-2">
+        <Navbar collapseOnSelect expand="md" bg="white" className="mb-3 shadow-sm px-2">
           <Container>
             <Navbar.Brand as={Link} to="/">{t('appName')}</Navbar.Brand>
-            <Nav className="mr-auto">
-              <LanguageSelect />
-              <Nav.Link as={Link} to="/" className="text-nowrap">{t('home')}</Nav.Link>
-              <Nav.Link as={Link} to="/login" className="text-nowrap">{t('login')}</Nav.Link>
-              <Nav.Link as={Link} to="/signup" className="text-nowrap">{t('registration')}</Nav.Link>
-              <LogOutButton />
-            </Nav>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
+              <Nav>
+                <LanguageSelect />
+                <Nav.Link as={Link} to="/" className="text-nowrap">{t('home')}</Nav.Link>
+                <Nav.Link as={Link} to="/login" className="text-nowrap">{t('login')}</Nav.Link>
+                <Nav.Link as={Link} to="/signup" className="text-nowrap">{t('registration')}</Nav.Link>
+                <LogOutButton />
+              </Nav>
+            </Navbar.Collapse>
           </Container>
         </Navbar>
         <Switch>
