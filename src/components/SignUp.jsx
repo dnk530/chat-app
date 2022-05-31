@@ -122,8 +122,8 @@ function SignUp() {
                           value={values.passwordConfirmation}
                           onChange={handleChange}
                           isInvalid={
-                            touched.passwordConfirmation &&
-                            errors.passwordConfirmation
+                            touched.passwordConfirmation
+                            && errors.passwordConfirmation
                           }
                         />
                         {errors.passwordConfirmation && (
