@@ -7,7 +7,11 @@ import { useAuth, useApi } from '../hooks/index.js';
 
 function NewMessageForm({ isLoading }) {
   const messageInput = useRef(null);
-  useEffect(() => messageInput.current && messageInput.current.focus());
+  // useEffect(() => {
+  //   if (!messageInput.current.disabled) {
+  //     messageInput.current && messageInput.current.focus();
+  //   }
+  // });
   const auth = useAuth();
   const api = useApi();
   const { t } = useTranslation();

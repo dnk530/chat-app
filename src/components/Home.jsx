@@ -30,12 +30,6 @@ function Home() {
     return undefined;
   }, []);
 
-  useEffect(() => {
-    if (messageBox.current.lastChild) {
-      messageBox.current.lastChild.scrollIntoView();
-    }
-  });
-
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const loadingState = useSelector((state) => state.channels.loading);
@@ -48,6 +42,12 @@ function Home() {
     : null;
 
   const [modalInfo, setModalInfo] = useState({ type: null, channel: null });
+
+  useEffect(() => {
+    if (messageBox.current.lastChild) {
+      messageBox.current.lastChild.scrollIntoView();
+    }
+  });
 
   const showModal = (type, channel = null) => () => {
     setModalInfo({ type, channel });
