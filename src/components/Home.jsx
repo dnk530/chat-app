@@ -85,14 +85,15 @@ function Home() {
                   </Placeholder>
                 )
                 : channels.map((channel) => (
-                  <ChannelButton
-                    key={channel.id}
-                    channel={channel}
-                    isActive={channel.id === currentChannelId}
-                    handleSelect={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
-                    handleRename={showModal('renameChannel', channel)}
-                    handleDelete={showModal('deleteChannel', channel)}
-                  />
+                  <Nav.Item key={channel.id} className="w-100">
+                    <ChannelButton
+                      channel={channel}
+                      isActive={channel.id === currentChannelId}
+                      handleSelect={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
+                      handleRename={showModal('renameChannel', channel)}
+                      handleDelete={showModal('deleteChannel', channel)}
+                    />
+                  </Nav.Item>
                 ))}
             </Nav>
           </Col>
