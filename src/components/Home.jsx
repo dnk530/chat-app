@@ -117,7 +117,8 @@ function Home() {
                 <Messages channelId={currentChannelId} />
               </Row>
               <Row className="mt-auto px-3 py-3">
-                {loadingState === 'loading' || modalInfo.type !== null ? <NewMessageForm isLoading /> : <NewMessageForm />}
+                {loadingState === 'loading' ? <NewMessageForm isLoading /> : <NewMessageForm />}
+                {/* {loadingState === 'loading' || modalInfo.type !== null ? <NewMessageForm isLoading /> : <NewMessageForm />} */}
               </Row>
             </Container>
           </Col>
