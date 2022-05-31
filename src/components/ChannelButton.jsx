@@ -3,7 +3,6 @@ import {
   Nav,
   Button,
   ButtonGroup,
-  DropdownButton,
   Dropdown,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -15,28 +14,40 @@ function ChannelButton({
   const { t } = useTranslation();
   return (
     <Nav.Item key={id} className="w-100">
-      <ButtonGroup className="w-100">
+      {!removable && (
         <Button
           variant={isActive ? 'secondary' : 'light'}
           onClick={handleSelect}
-          className="rounded-0 text-start text-truncate"
+          className="w-100 rounded-0 text-start text-truncate"
         >
           {`#${name}`}
         </Button>
-        {removable && (
-          <DropdownButton
+      )}
+      {removable && (
+        <Dropdown as={ButtonGroup} className="d-flex">
+          <Button
             variant={isActive ? 'secondary' : 'light'}
-            as={ButtonGroup}
-            title=""
-            id="bg-nested-dropdown"
-            className="rounded-0"
-            aria-label={t('manageChannel')}
+            onClick={handleSelect}
+            className="w-100 rounded-0 text-start text-truncate"
           >
-            <Dropdown.Item onClick={handleRename}>{t('rename')}</Dropdown.Item>
-            <Dropdown.Item onClick={handleDelete}>{t('delete')}</Dropdown.Item>
-          </DropdownButton>
-        )}
-      </ButtonGroup>
+            {`#${name}`}
+          </Button>
+          <Dropdown.Toggle
+            split
+            variant={isActive ? 'secondary' : 'light'}
+            id="dropdown-split-basic"
+            aria-label={t('manageChannel')}
+          />
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={handleRename}>
+              {t('rename')}
+            </Dropdown.Item>
+            <Dropdown.Item onClick={handleDelete}>
+              {t('delete')}
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      )}
     </Nav.Item>
   );
 }
