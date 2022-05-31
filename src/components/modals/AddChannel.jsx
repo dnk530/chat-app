@@ -58,6 +58,7 @@ function AddChannel({ show, hideModal }) {
               {t('channelName')}
             </Form.Label>
             <Form.Control
+              autoFocus
               type="text"
               ref={inputRef}
               value={f.values.text}
