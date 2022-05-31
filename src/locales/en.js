@@ -23,6 +23,7 @@ export default {
     deleteChannel: 'Remove channel',
     renameChannel: 'Rename channel',
     confirmPrompt: 'Please, confirm',
+    manageChannel: 'Управление каналом',
     delete: 'Delete',
     rename: 'Rename',
     en: 'English',

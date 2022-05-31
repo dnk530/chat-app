@@ -24,6 +24,7 @@ export default {
     deleteChannel: 'Удалить канал',
     renameChannel: 'Переименовать канал',
     confirmPrompt: 'Подтвердите, пожалуйста',
+    manageChannel: 'Управление каналом',
     delete: 'Удалить',
     rename: 'Переименовать',
     en: 'English',
