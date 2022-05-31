@@ -33,7 +33,7 @@ export default {
     notifications: {
       channelAdded: 'Канал создан',
       channelRenamed: 'Канал переименован',
-      channelDeleted: 'Канал удален',
+      channelDeleted: 'Канал удалён',
     },
     errors: {
       required: 'Обязательное поле',
