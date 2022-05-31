@@ -17,6 +17,7 @@ export default {
     send: 'Send',
     cancel: 'Cancel',
     messagePrompt: 'Enter message',
+    newMessage: 'New message',
     addChannel: 'Add channel',
     deleteChannel: 'Remove channel',
     renameChannel: 'Rename channel',

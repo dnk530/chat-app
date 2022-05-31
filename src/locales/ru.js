@@ -18,6 +18,7 @@ export default {
     send: 'Отправить',
     cancel: 'Отменить',
     messagePrompt: 'Введите сообщение',
+    newMessage: 'Новое сообщение',
     addChannel: 'Добавить канал',
     deleteChannel: 'Удалить канал',
     renameChannel: 'Переименовать канал',

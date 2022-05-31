@@ -39,10 +39,10 @@ function NewMessageForm({ isLoading }) {
 
   return (
     <Form onSubmit={f.handleSubmit}>
-      <Form.Group className="d-flex">
+      <Form.Group className="d-flex" controlId="text">
+        <Form.Label visuallyHidden>{t('newMessage')}</Form.Label>
         <Form.Control
           type="text"
-          name="text"
           ref={messageInput}
           aria-label="New message"
           placeholder={t('messagePrompt')}
