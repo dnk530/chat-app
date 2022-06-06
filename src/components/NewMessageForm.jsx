@@ -49,6 +49,7 @@ function NewMessageForm({ isLoading }) {
           onChange={f.handleChange}
           autoComplete="off"
           disabled={f.isSubmitting || isLoading}
+          aria-label={t('newMessage')}
         />
         <Button type="submit" className="mx-2" disabled={f.isSubmitting || isLoading}>
           {t('send')}
