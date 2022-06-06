@@ -56,7 +56,9 @@ function RenameChannel({ show, modalInfo, hideModal }) {
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
           <Form.Group controlId="newChannelName">
-            <Form.Label className="visually-hidden">Enter new channel name</Form.Label>
+            <Form.Label className="visually-hidden">
+              {t('channelName')}
+            </Form.Label>
             <Form.Control
               type="text"
               ref={inputRef}
