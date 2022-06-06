@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useAuth } from '../hooks/index.js';
+import routes from '../routes.js';
 
 function SignUp() {
   const signupSchema = Yup.object().shape({
@@ -29,7 +30,7 @@ function SignUp() {
   const { t } = useTranslation();
 
   return auth.loggedIn ? (
-    <Redirect to="/" />
+    <Redirect to={routes.homePagePath()} />
   ) : (
     <Container fluid className="h-100">
       <Row className="h-100 justify-content-center align-items-center">
@@ -47,7 +48,7 @@ function SignUp() {
                 onSubmit={(values, actions) => {
                   const { username, password } = values;
                   axios
-                    .post('/api/v1/signup', { username, password })
+                    .post(routes.signupPath(), { username, password })
                     .then((res) => {
                       const { token } = res.data;
                       localStorage.setItem('userId', JSON.stringify({ token }));

@@ -13,18 +13,19 @@ import {
 } from 'react-bootstrap';
 import { ToastContainer } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../hooks/index.js';
 
 import Login from './Login.jsx';
 import Home from './Home.jsx';
 import NotFound from './404.jsx';
-
-import { useAuth } from '../hooks/index.js';
 import SignUp from './SignUp.jsx';
 import LanguageSelect from './LanguageSelect.jsx';
 
+import routes from '../routes.js';
+
 function PrivateRoute({ children }) {
   const auth = useAuth();
-  return (auth.loggedIn ? children : <Redirect to="/login" />);
+  return (auth.loggedIn ? children : <Redirect to={routes.loginPagePath()} />);
 }
 
 function LogOutButton() {
@@ -40,14 +41,14 @@ function App() {
       <Container fluid className="d-flex flex-column p-0 h-100">
         <Navbar collapseOnSelect expand="md" bg="white" className="mb-3 shadow-sm px-2">
           <Container>
-            <Navbar.Brand as={Link} to="/">{t('appName')}</Navbar.Brand>
+            <Navbar.Brand as={Link} to={routes.homePagePath()}>{t('appName')}</Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
               <Nav>
                 <LanguageSelect />
-                <Nav.Link as={Link} to="/" className="text-nowrap">{t('home')}</Nav.Link>
-                <Nav.Link as={Link} to="/login" className="text-nowrap">{t('login')}</Nav.Link>
-                <Nav.Link as={Link} to="/signup" className="text-nowrap">{t('registration')}</Nav.Link>
+                <Nav.Link as={Link} to={routes.homePagePath()} className="text-nowrap">{t('home')}</Nav.Link>
+                <Nav.Link as={Link} to={routes.loginPagePath()} className="text-nowrap">{t('login')}</Nav.Link>
+                <Nav.Link as={Link} to={routes.signupPagePath()} className="text-nowrap">{t('registration')}</Nav.Link>
                 <LogOutButton />
               </Nav>
             </Navbar.Collapse>

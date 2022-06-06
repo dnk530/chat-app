@@ -13,10 +13,7 @@ import { Redirect, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useAuth } from '../hooks/index.js';
-
-const routes = {
-  login: '/api/v1/login',
-};
+import routes from '../routes.js';
 
 function LoginForm() {
   const auth = useAuth();
@@ -28,7 +25,7 @@ function LoginForm() {
       const { username, password } = values;
       try {
         setAuthFailed(false);
-        const response = await axios.post(routes.login, { username, password });
+        const response = await axios.post(routes.loginPath(), { username, password });
         const { data: { token } } = response;
         localStorage.setItem('userId', JSON.stringify({ token, username }));
         f.resetForm();
@@ -93,10 +90,10 @@ function Login() {
               <LoginForm />
             </Card.Body>
             <Card.Footer className="text-center">
-              <Card.Link as={Link} to="/signup">{t('register')}</Card.Link>
+              <Card.Link as={Link} to={routes.signupPagePath()}>{t('register')}</Card.Link>
             </Card.Footer>
           </Card>
-          {auth.loggedIn && <Redirect to="/" />}
+          {auth.loggedIn && <Redirect to={routes.homePagePath()} />}
         </Col>
       </Row>
     </Container>
