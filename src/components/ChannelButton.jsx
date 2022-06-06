@@ -26,7 +26,9 @@ function ChannelButton({
           variant={isActive ? 'secondary' : 'light'}
           id="dropdown-split-basic"
           aria-label={t('manageChannel')}
-        />
+        >
+          <span className="visually-hidden">{t('manageChannel')}</span>
+        </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={handleRename}>
             {t('rename')}
