@@ -100,14 +100,14 @@ function Home() {
           <Col className="h-100">
             <Container fluid className="h-100 p-0 d-flex flex-column">
               <Row className="mb-3 p-2 bg-light shadow-sm small">
-                <Col>
-                  <span>{`#${channelName || ''}`}</span>
+                <Col className="text-truncate">
+                  <b className="text-nowrap">{`# ${channelName || ''}`}</b>
                   <br />
                   <span className="text-muted">
                     {t('message', { count: numberOfMessages })}
                   </span>
                 </Col>
-                <Col className="text-end">
+                <Col className="text-end text-nowrap">
                   {t('welcome')}
                   ,&nbsp;
                   {auth.username}

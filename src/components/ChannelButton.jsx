@@ -19,7 +19,7 @@ function ChannelButton({
           onClick={handleSelect}
           className="w-100 rounded-0 text-start text-truncate"
         >
-          {`#${name}`}
+          {`# ${name}`}
         </Button>
         <Dropdown.Toggle
           split
@@ -43,7 +43,7 @@ function ChannelButton({
         onClick={handleSelect}
         className="w-100 rounded-0 text-start text-truncate"
       >
-        {`#${name}`}
+        {`# ${name}`}
       </Button>
     )
   );

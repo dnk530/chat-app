@@ -14,7 +14,7 @@ export default {
     message_one: '{{count}} сообщение',
     message_few: '{{count}} сообщения',
     message_many: '{{count}} сообщений',
-    welcome: 'Добро пожаловать',
+    welcome: 'Привет',
     send: 'Отправить',
     cancel: 'Отменить',
     messagePrompt: 'Введите сообщение',
