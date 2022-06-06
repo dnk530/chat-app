@@ -10,7 +10,7 @@ import { actions as channelsActions } from './slices/channelsSlice.js';
 import resources from './locales/index.js';
 import store from './slices/index.js';
 import AuthProvider from './components/providers/AuthProvider.jsx';
-import ApiProvider from './components/providers/ApiProvider.jsx';
+import { ApiContext } from './contexts/index.js';
 
 const rollbarConfig = {
   accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
@@ -61,16 +61,58 @@ export default async (socket) => {
     store.dispatch(channelsActions.renameChannel(message));
   });
 
+  const sendNewMessage = (message, cb) => {
+    socket.emit('newMessage', message, cb);
+  };
+
+  const addNewChannel = (channel, cb) => {
+    socket.emit('newChannel', channel, ({ status, data }) => {
+      if (status !== 'ok') {
+        cb('Network Error');
+        return;
+      }
+      cb(null, data);
+    });
+  };
+
+  const renameChannel = (channel, cb) => {
+    socket.emit('renameChannel', channel, (res) => {
+      if (res.status !== 'ok') {
+        cb('Network Error');
+        return;
+      }
+      cb(null);
+    });
+  };
+
+  const deleteChannel = (channel, cb) => {
+    socket.emit('removeChannel', channel, (res) => {
+      if (res.status !== 'ok') {
+        cb('Network Error');
+        return;
+      }
+      cb(null);
+    });
+  };
+
+  // eslint-disable-next-line react/jsx-no-constructed-context-values
+  const apiActions = {
+    sendNewMessage,
+    addNewChannel,
+    renameChannel,
+    deleteChannel,
+  };
+
   return (
     <Provider store={store}>
       <RollbarProvider config={rollbarConfig}>
         <ErrorBoundary>
           <I18nextProvider i18n={i18n}>
-            <ApiProvider socketInstance={socket}>
+            <ApiContext.Provider value={apiActions}>
               <AuthProvider>
                 <App />
               </AuthProvider>
-            </ApiProvider>
+            </ApiContext.Provider>
           </I18nextProvider>
         </ErrorBoundary>
       </RollbarProvider>
