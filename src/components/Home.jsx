@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -5,8 +6,8 @@ import {
   Row, Col, Container, Nav, Button, Placeholder,
 } from 'react-bootstrap';
 
-import { actions as channelActions, fetchAllChannels, selectors as channelsSelectors } from '../slices/channelsSlice.js';
-import { fetchAllMessages, selectors as messagesSelectors } from '../slices/messagesSlice.js';
+import { actions as channelActions, fetchInitialData, selectors as channelsSelectors } from '../slices/channelsSlice.js';
+import { selectors as messagesSelectors } from '../slices/messagesSlice.js';
 import { openModal, closeModal } from '../slices/modalSlice.js';
 import { useAuth } from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
@@ -23,8 +24,8 @@ function Modal() {
 
   const typeToModal = {
     addChannel: () => <AddChannel show hideModal={hideModal} />,
-    renameChannel: (channel) => <RenameChannel show modalInfo={channel} hideModal={hideModal} />,
-    deleteChannel: (channel) => <DeleteChannel show modalInfo={channel} hideModal={hideModal} />,
+    renameChannel: (data) => <RenameChannel show modalInfo={data} hideModal={hideModal} />,
+    deleteChannel: (data) => <DeleteChannel show modalInfo={data} hideModal={hideModal} />,
   };
   return isOpened ? typeToModal[type](channel) : null;
 }
@@ -39,8 +40,7 @@ function Home() {
     if (!auth.loggedIn) {
       return null;
     }
-    dispatch(fetchAllChannels());
-    dispatch(fetchAllMessages());
+    dispatch(fetchInitialData());
     return undefined;
   }, []);
 

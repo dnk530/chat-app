@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const modalSlice = createSlice({
@@ -14,7 +15,7 @@ const modalSlice = createSlice({
       state.isOpened = false;
       state.type = null;
       state.channel = {};
-    } 
+    },
   },
 });
 

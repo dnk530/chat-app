@@ -1,15 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
-import getData from '../utils/fetcher.js';
+import axios from 'axios';
+import getAuthHeader from '../utils/getAuthHeader.js';
+import routes from '../routes.js';
 
 const channelsAdapter = createEntityAdapter();
 
 const initialState = channelsAdapter.getInitialState({ currentChannelId: null, loading: 'idle', error: null });
 
-export const fetchAllChannels = createAsyncThunk(
+export const fetchInitialData = createAsyncThunk(
   'channels/fetchAll',
   async () => {
-    const data = await getData();
+    const { data } = await axios.get(routes.allDataPath(), { headers: getAuthHeader() });
     return data;
   },
 );
@@ -28,11 +30,11 @@ const channelSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllChannels.pending, (state) => {
+      .addCase(fetchInitialData.pending, (state) => {
         state.loading = 'loading';
         state.error = null;
       })
-      .addCase(fetchAllChannels.fulfilled, (state, action) => {
+      .addCase(fetchInitialData.fulfilled, (state, action) => {
         state.loading = 'idle';
         state.error = null;
         const { channels, currentChannelId } = action.payload;

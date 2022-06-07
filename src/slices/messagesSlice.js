@@ -1,17 +1,8 @@
-import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
-import getData from '../utils/fetcher.js';
-import { actions as channelsActions } from './channelsSlice.js';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { actions as channelsActions, fetchInitialData } from './channelsSlice.js';
 
 const messagesAdapter = createEntityAdapter();
 const initialState = messagesAdapter.getInitialState();
-
-export const fetchAllMessages = createAsyncThunk(
-  'messages/fetchAll',
-  async () => {
-    const data = await getData();
-    return data.messages;
-  },
-);
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -23,7 +14,10 @@ const messagesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllMessages.fulfilled, messagesAdapter.addMany)
+      .addCase(fetchInitialData.fulfilled, (state, action) => {
+        const { messages } = action.payload;
+        messagesAdapter.addMany(state, messages);
+      })
       .addCase(channelsActions.removeChannel, (state, action) => {
         const channelId = action.payload;
         const newMessages = Object.values(state.entities).filter((m) => m.channelId !== channelId);
