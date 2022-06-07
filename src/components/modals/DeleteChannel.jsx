@@ -4,10 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useApi } from '../../hooks/index.js';
 
-function DeleteChannel({ show, modalInfo, hideModal }) {
+function DeleteChannel({ show, modalInfo: channel, hideModal }) {
   const { t } = useTranslation();
   const api = useApi();
-  const { channel } = modalInfo;
   const handleDelete = (id) => {
     api.deleteChannel({ id }, (err) => {
       if (err) {

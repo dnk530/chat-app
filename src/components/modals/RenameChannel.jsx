@@ -8,11 +8,10 @@ import { toast } from 'react-toastify';
 import { useApi } from '../../hooks/index.js';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 
-function RenameChannel({ show, modalInfo, hideModal }) {
+function RenameChannel({ show, modalInfo: channel, hideModal }) {
   const inputRef = useRef(null);
   const api = useApi();
   const { t } = useTranslation();
-  const { channel } = modalInfo;
   const channelsList = useSelector(channelsSelectors.selectAll).map((c) => c.name);
   const f = useFormik({
     initialValues: { newChannelName: '' },

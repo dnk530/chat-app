@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -7,6 +7,7 @@ import {
 
 import { actions as channelActions, fetchAllChannels, selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import { fetchAllMessages, selectors as messagesSelectors } from '../slices/messagesSlice.js';
+import { openModal, closeModal } from '../slices/modalSlice.js';
 import { useAuth } from '../hooks/index.js';
 import NewMessageForm from './NewMessageForm.jsx';
 import Messages from './Messages.jsx';
@@ -14,6 +15,19 @@ import ChannelButton from './ChannelButton.jsx';
 import AddChannel from './modals/AddChannel.jsx';
 import DeleteChannel from './modals/DeleteChannel.jsx';
 import RenameChannel from './modals/RenameChannel.jsx';
+
+function Modal() {
+  const { isOpened, type, channel } = useSelector((state) => state.modal);
+  const dispatch = useDispatch();
+  const hideModal = () => dispatch(closeModal());
+
+  const typeToModal = {
+    addChannel: () => <AddChannel show hideModal={hideModal} />,
+    renameChannel: (channel) => <RenameChannel show modalInfo={channel} hideModal={hideModal} />,
+    deleteChannel: (channel) => <DeleteChannel show modalInfo={channel} hideModal={hideModal} />,
+  };
+  return isOpened ? typeToModal[type](channel) : null;
+}
 
 function Home() {
   const auth = useAuth();
@@ -41,26 +55,15 @@ function Home() {
     ? channels.find((c) => (c.id === currentChannelId)).name
     : null;
 
-  const [modalInfo, setModalInfo] = useState({ type: null, channel: null });
-
   useEffect(() => {
     if (messageBox.current.lastChild) {
       messageBox.current.lastChild.scrollIntoView();
     }
   });
 
-  const showModal = (type, channel = null) => () => {
-    setModalInfo({ type, channel });
-  };
-  const hideModal = () => {
-    setModalInfo({ type: null, channel: null });
-  };
-
   return (
     <>
-      <AddChannel show={modalInfo.type === 'addChannel'} hideModal={hideModal} />
-      <DeleteChannel show={modalInfo.type === 'deleteChannel'} hideModal={hideModal} modalInfo={modalInfo} />
-      <RenameChannel show={modalInfo.type === 'renameChannel'} hideModal={hideModal} modalInfo={modalInfo} />
+      <Modal />
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white">
           <Col className="col-4 col-md-2  bg-light pt-4 px-0 border-end">
@@ -69,7 +72,7 @@ function Home() {
                 {t('channels')}
                 :
               </span>
-              <Button variant="light" className="p-0" onClick={showModal('addChannel')}>+</Button>
+              <Button variant="light" className="p-0" onClick={() => dispatch(openModal({ type: 'addChannel' }))}>+</Button>
             </Container>
             <Nav
               fill
@@ -90,8 +93,8 @@ function Home() {
                       channel={channel}
                       isActive={channel.id === currentChannelId}
                       handleSelect={() => dispatch(channelActions.setCurrentChannelId(channel.id))}
-                      handleRename={showModal('renameChannel', channel)}
-                      handleDelete={showModal('deleteChannel', channel)}
+                      handleRename={() => dispatch(openModal({ type: 'renameChannel', channel }))}
+                      handleDelete={() => dispatch(openModal({ type: 'deleteChannel', channel }))}
                     />
                   </Nav.Item>
                 ))}
@@ -118,7 +121,7 @@ function Home() {
                 <Messages channelId={currentChannelId} />
               </Row>
               <Row className="mt-auto px-3 py-3">
-                {loadingState === 'loading' || modalInfo.type !== null ? <NewMessageForm isLoading /> : <NewMessageForm />}
+                {loadingState === 'loading' ? <NewMessageForm isLoading /> : <NewMessageForm />}
               </Row>
             </Container>
           </Col>
