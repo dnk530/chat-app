@@ -55,12 +55,6 @@ function Home() {
     ? channels.find((c) => (c.id === currentChannelId)).name
     : null;
 
-  useEffect(() => {
-    if (messageBox.current.lastChild) {
-      messageBox.current.lastChild.scrollIntoView();
-    }
-  });
-
   return (
     <>
       <Modal />
@@ -117,8 +111,10 @@ function Home() {
                   !
                 </Col>
               </Row>
-              <Row ref={messageBox} className="bg-white px-2 overflow-auto">
-                <Messages channelId={currentChannelId} />
+              <Row ref={messageBox} className="bg-white px-2 overflow-auto flex-column-reverse">
+                <Row>
+                  <Messages channelId={currentChannelId} />
+                </Row>
               </Row>
               <Row className="mt-auto px-3 py-3">
                 {loadingState === 'loading' ? <NewMessageForm isLoading /> : <NewMessageForm />}
