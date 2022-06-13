@@ -41,7 +41,6 @@ function Home() {
       return null;
     }
     dispatch(fetchInitialData());
-    return undefined;
   }, []);
 
   const channels = useSelector(channelsSelectors.selectAll);
