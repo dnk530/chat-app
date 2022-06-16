@@ -90,7 +90,7 @@ function Login() {
               <LoginForm />
             </Card.Body>
             <Card.Footer className="text-center">
-              <Card.Link as={Link} to={routes.signupPagePath()}>{t('register')}</Card.Link>
+              <Card.Link as={Link} to={routes.signupPagePath()}>{t('registration')}</Card.Link>
             </Card.Footer>
           </Card>
           {auth.loggedIn && <Redirect to={routes.homePagePath()} />}
