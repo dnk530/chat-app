@@ -41,7 +41,8 @@ function Home() {
       return null;
     }
     dispatch(fetchInitialData());
-  }, []);
+    return undefined;
+  }, [auth.loggedIn, dispatch]);
 
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
