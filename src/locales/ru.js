@@ -28,7 +28,7 @@ export default {
     delete: 'Удалить',
     rename: 'Переименовать',
     en: 'English',
-    ru: 'Русский',
+    ru: 'Russian',
     appName: 'Hexlet Chat',
     notifications: {
       channelAdded: 'Канал создан',
