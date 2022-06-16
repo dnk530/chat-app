@@ -17,18 +17,11 @@ import AddChannel from './modals/AddChannel.jsx';
 import DeleteChannel from './modals/DeleteChannel.jsx';
 import RenameChannel from './modals/RenameChannel.jsx';
 
-function Modal() {
-  const { isOpened, type, channel } = useSelector((state) => state.modal);
-  const dispatch = useDispatch();
-  const hideModal = () => dispatch(closeModal());
-
-  const typeToModal = {
-    addChannel: () => <AddChannel show hideModal={hideModal} />,
-    renameChannel: (data) => <RenameChannel show modalInfo={data} hideModal={hideModal} />,
-    deleteChannel: (data) => <DeleteChannel show modalInfo={data} hideModal={hideModal} />,
-  };
-  return isOpened ? typeToModal[type](channel) : null;
-}
+const typeToModal = {
+  addChannel: AddChannel,
+  renameChannel: RenameChannel,
+  deleteChannel: DeleteChannel,
+};
 
 function Home() {
   const auth = useAuth();
@@ -55,9 +48,13 @@ function Home() {
     ? channels.find((c) => (c.id === currentChannelId)).name
     : null;
 
+  const { type, isOpened, channel: data } = useSelector((state) => state.modal);
+  const hideModal = () => dispatch(closeModal());
+
   return (
     <>
-      <Modal />
+      { isOpened
+      && React.createElement(typeToModal[type], { show: true, modalInfo: data, hideModal })}
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white">
           <Col className="col-4 col-md-2  bg-light pt-4 px-0 border-end">
