@@ -30,12 +30,12 @@ function Home() {
   const messageBox = useRef(null);
 
   useEffect(() => {
-    if (!auth.loggedIn) {
+    if (!auth.user.loggedIn) {
       return null;
     }
-    dispatch(fetchInitialData());
+    dispatch(fetchInitialData(auth.user.token));
     return undefined;
-  }, [auth.loggedIn, dispatch]);
+  }, [auth.user, dispatch]);
 
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -104,7 +104,7 @@ function Home() {
                 <Col className="text-end text-nowrap">
                   {t('welcome')}
                   ,&nbsp;
-                  {auth.username}
+                  {auth.user.username}
                   !
                 </Col>
               </Row>

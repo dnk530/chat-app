@@ -29,7 +29,7 @@ function SignUp() {
   const usernameRef = useRef(null);
   const { t } = useTranslation();
 
-  return auth.loggedIn ? (
+  return auth.user.loggedIn ? (
     <Redirect to={routes.homePagePath()} />
   ) : (
     <Container fluid className="h-100">
@@ -51,10 +51,9 @@ function SignUp() {
                     .post(routes.signupPath(), { username, password })
                     .then((res) => {
                       const { token } = res.data;
-                      localStorage.setItem('userId', JSON.stringify({ token }));
                       actions.resetForm();
                       actions.setSubmitting(false);
-                      auth.logIn(username);
+                      auth.logIn({ username, token });
                     })
                     .catch((e) => {
                       if (e.response.status === 409) {

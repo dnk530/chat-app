@@ -27,9 +27,8 @@ function LoginForm() {
         setAuthFailed(false);
         const response = await axios.post(routes.loginPath(), { username, password });
         const { data: { token } } = response;
-        localStorage.setItem('userId', JSON.stringify({ token, username }));
         f.resetForm();
-        auth.logIn(username);
+        auth.logIn({ token, username });
       } catch (e) {
         if (e.code === 'ERR_BAD_REQUEST' && e.response.status === 401) {
           setAuthFailed(true);
@@ -93,7 +92,7 @@ function Login() {
               <Card.Link as={Link} to={routes.signupPagePath()}>{t('registration')}</Card.Link>
             </Card.Footer>
           </Card>
-          {auth.loggedIn && <Redirect to={routes.homePagePath()} />}
+          {auth.user.loggedIn && <Redirect to={routes.homePagePath()} />}
         </Col>
       </Row>
     </Container>

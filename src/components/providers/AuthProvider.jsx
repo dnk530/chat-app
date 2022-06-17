@@ -2,30 +2,28 @@ import React, { useState, useMemo } from 'react';
 import { AuthContext } from '../../contexts/index.js';
 
 export default function AuthProvider({ children }) {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [username, setUsername] = useState(null);
+  const [user, setUser] = useState({ loggedIn: false });
 
-  const logIn = (loggedInUsername) => {
-    setLoggedIn(true);
-    setUsername(loggedInUsername);
+  const logIn = ({ token, username }) => {
+    localStorage.setItem('userId', JSON.stringify({ token, username }));
+    setUser({ token, username, loggedIn: true });
   };
+
   const logOut = () => {
     localStorage.removeItem('userId');
-    setLoggedIn(false);
-    setUsername(null);
+    setUser({ loggedIn: false });
   };
 
   const value = useMemo(() => ({
-    loggedIn,
     logIn,
     logOut,
-    username,
-  }), [loggedIn, username]);
+    user,
+  }), [user]);
 
   try {
     const userId = JSON.parse(localStorage.getItem('userId'));
-    if (!loggedIn && userId.token) {
-      logIn(userId.username);
+    if (!user.loggedIn && userId.token) {
+      logIn(userId);
     }
   } catch (e) {
     console.log('no token');

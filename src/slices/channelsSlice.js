@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import getAuthHeader from '../utils/getAuthHeader.js';
 import routes from '../routes.js';
 
 const channelsAdapter = createEntityAdapter();
@@ -10,8 +9,8 @@ const initialState = channelsAdapter.getInitialState({ currentChannelId: null, l
 
 export const fetchInitialData = createAsyncThunk(
   'channels/fetchAll',
-  async () => {
-    const { data } = await axios.get(routes.allDataPath(), { headers: getAuthHeader() });
+  async (token) => {
+    const { data } = await axios.get(routes.allDataPath(), { headers: { Authorization: `Bearer ${token}` } });
     return data;
   },
 );
