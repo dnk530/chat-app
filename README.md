@@ -6,3 +6,15 @@
 ## Demo
 
 * [Visit Demo](https://still-lake-71009.herokuapp.com/)
+
+## Features
+
+Real-time app using React/Redux, AJAX, REST, websockets, React (with hooks) + Redux (@reduxjs/toolkit) + Formik
+
+  * login and signup pages with validation and error display (invalid credentials, network errors, username already exists)
+  * multilanguage support (use dropdown in the header to select language)
+  * realtime messaging using socket (try create different users in different browser or incognito mode)
+  * channel management: adding, renaming, deletion in modals with validation, errors display, and notifications
+  * profanity filter for chat
+
+  
