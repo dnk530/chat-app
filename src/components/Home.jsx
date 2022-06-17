@@ -50,11 +50,11 @@ function Home() {
 
   const { type, isOpened, channel: data } = useSelector((state) => state.modal);
   const hideModal = () => dispatch(closeModal());
+  const Modal = typeToModal[type];
 
   return (
     <>
-      { isOpened
-      && React.createElement(typeToModal[type], { show: true, modalInfo: data, hideModal })}
+      {isOpened && <Modal show modalInfo={data} hideModal={hideModal} />}
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white">
           <Col className="col-4 col-md-2  bg-light pt-4 px-0 border-end">
