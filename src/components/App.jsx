@@ -25,13 +25,13 @@ import routes from '../routes.js';
 
 function PrivateRoute({ children }) {
   const auth = useAuth();
-  return (auth.user.loggedIn ? children : <Redirect to={routes.loginPagePath()} />);
+  return (auth.user ? children : <Redirect to={routes.loginPagePath()} />);
 }
 
 function LogOutButton() {
   const { t } = useTranslation();
   const auth = useAuth();
-  return auth.user.loggedIn && <Button onClick={auth.logOut} className="text-nowrap">{t('logout')}</Button>;
+  return auth.user && <Button onClick={auth.logOut} className="text-nowrap">{t('logout')}</Button>;
 }
 
 function App() {

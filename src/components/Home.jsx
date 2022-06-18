@@ -31,7 +31,7 @@ function Home() {
   const messageBox = useRef(null);
 
   useEffect(() => {
-    if (!auth.user.loggedIn) {
+    if (!auth.user) {
       return null;
     }
     dispatch(fetchInitialData(auth.user.token));

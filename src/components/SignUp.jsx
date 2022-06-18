@@ -29,7 +29,7 @@ function SignUp() {
   const usernameRef = useRef(null);
   const { t } = useTranslation();
 
-  return auth.user.loggedIn ? (
+  return auth.user ? (
     <Redirect to={routes.homePagePath()} />
   ) : (
     <Container fluid className="h-100">

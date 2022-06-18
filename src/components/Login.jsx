@@ -92,7 +92,7 @@ function Login() {
               <Card.Link as={Link} to={routes.signupPagePath()}>{t('registration')}</Card.Link>
             </Card.Footer>
           </Card>
-          {auth.user.loggedIn && <Redirect to={routes.homePagePath()} />}
+          {auth.user && <Redirect to={routes.homePagePath()} />}
         </Col>
       </Row>
     </Container>

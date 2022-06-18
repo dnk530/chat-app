@@ -2,16 +2,16 @@ import React, { useState, useMemo } from 'react';
 import { AuthContext } from '../../contexts/index.js';
 
 export default function AuthProvider({ children }) {
-  const [user, setUser] = useState({ loggedIn: false });
+  const [user, setUser] = useState(null);
 
   const logIn = ({ token, username }) => {
     localStorage.setItem('userId', JSON.stringify({ token, username }));
-    setUser({ token, username, loggedIn: true });
+    setUser({ token, username });
   };
 
   const logOut = () => {
     localStorage.removeItem('userId');
-    setUser({ loggedIn: false });
+    setUser(null);
   };
 
   const value = useMemo(() => ({
@@ -22,7 +22,7 @@ export default function AuthProvider({ children }) {
 
   try {
     const userId = JSON.parse(localStorage.getItem('userId'));
-    if (!user.loggedIn && userId.token) {
+    if (!user && userId.token) {
       logIn(userId);
     }
   } catch (e) {
