@@ -41,6 +41,10 @@ const channelSlice = createSlice({
         if (state.currentChannelId === null) {
           state.currentChannelId = currentChannelId;
         }
+      })
+      .addCase(fetchInitialData.rejected, (state, action) => {
+        state.loading = 'failed';
+        state.error = action.error.code;
       });
   },
 });

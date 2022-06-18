@@ -6,6 +6,7 @@ import {
   Row, Col, Container, Nav, Button, Placeholder,
 } from 'react-bootstrap';
 
+import { toast } from 'react-toastify';
 import { actions as channelActions, fetchInitialData, selectors as channelsSelectors } from '../slices/channelsSlice.js';
 import { selectors as messagesSelectors } from '../slices/messagesSlice.js';
 import { openModal, closeModal } from '../slices/modalSlice.js';
@@ -40,6 +41,11 @@ function Home() {
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const loadingState = useSelector((state) => state.channels.loading);
+
+  if (loadingState === 'failed') {
+    toast.error(t('errors.networkError'));
+  }
+
   const numberOfMessages = useSelector(messagesSelectors.selectAll)
     .filter((m) => m.channelId === currentChannelId)
     .length;
