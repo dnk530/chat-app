@@ -20,13 +20,9 @@ export default function AuthProvider({ children }) {
     user,
   }), [user]);
 
-  try {
-    const userId = JSON.parse(localStorage.getItem('userId'));
-    if (!user && userId.token) {
-      logIn(userId);
-    }
-  } catch (e) {
-    console.log('no token');
+  const userId = JSON.parse(localStorage.getItem('userId'));
+  if (!user && userId) {
+    logIn(userId);
   }
 
   return (
